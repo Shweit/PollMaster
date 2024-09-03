@@ -1,6 +1,5 @@
 package com.shweit.poll.commands;
 
-import com.google.gson.reflect.TypeToken;
 import com.shweit.poll.commands.pollDetailsCommand.PollDetailsCommand;
 import com.shweit.poll.utils.ConnectionManager;
 import org.bukkit.ChatColor;
@@ -11,7 +10,6 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import com.google.gson.Gson;
 
-import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
