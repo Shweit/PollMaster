@@ -29,6 +29,10 @@ public final class PollDetailsCommand {
      * @param pollId The ID of the poll to display.
      */
     public void openPollDetails(final Player player, final int pollId) {
+        if (!player.hasPermission("polls.vote")) {
+            player.sendMessage(ChatColor.RED + "You do not have permission to view poll details.");
+        }
+
         Inventory pollDetailsInventory = Bukkit.createInventory(null, 54, ChatColor.BLUE + "Poll Details");
 
         PollDetails pollDetails = getPollDetails(pollId);

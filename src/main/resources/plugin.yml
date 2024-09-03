@@ -15,3 +15,8 @@ commands:
     description: Creates a new poll with a question and up to 10 answers.
     usage: /createpoll "<question>" "<answer1>" "<answer2>" ... [--multi]
     permission: poll.create
+
+  vote:
+    description: Open a poll to vote on.
+    usage: /vote <poll_id>
+    permission: poll.vote

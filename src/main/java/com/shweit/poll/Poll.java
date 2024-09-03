@@ -1,6 +1,7 @@
 package com.shweit.poll;
 
 import com.shweit.poll.commands.CreatePollCommand;
+import com.shweit.poll.commands.VoteCommand;
 import com.shweit.poll.commands.pollDetailsCommand.PollDetailGuiListener;
 import com.shweit.poll.commands.pollsCommand.PollsCommand;
 import com.shweit.poll.commands.pollsCommand.PollsGuiListener;
@@ -30,6 +31,7 @@ public final class Poll extends JavaPlugin {
         setupDatabase();
         getCommand("createpoll").setExecutor(new CreatePollCommand());
         getCommand("polls").setExecutor(new PollsCommand());
+        getCommand("vote").setExecutor(new VoteCommand());
         getServer().getPluginManager().registerEvents(new PollsGuiListener(), this);
         getServer().getPluginManager().registerEvents(new PollDetailGuiListener(), this);
     }
