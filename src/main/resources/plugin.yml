@@ -1,0 +1,11 @@
+name: Poll
+version: '1.0'
+main: com.shweit.poll.Poll
+api-version: '1.21'
+author: Shweit
+
+commands:
+  createpoll:
+    description: Creates a new poll with a question and up to 10 answers.
+    usage: /createpoll "<question>" "<answer1>" "<answer2>" ... [--multi]
+    permission: poll.createpoll
