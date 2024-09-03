@@ -1,5 +1,6 @@
 name: Poll
 version: '1.0'
+description: A versatile Minecraft plugin that allows players to create, manage, and view polls in-game, providing an engaging way for players to participate in server decisions.
 main: com.shweit.poll.Poll
 api-version: '1.21'
 author: Shweit
