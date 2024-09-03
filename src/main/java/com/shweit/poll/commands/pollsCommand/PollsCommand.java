@@ -28,6 +28,11 @@ public final class PollsCommand implements CommandExecutor {
             return true;
         }
 
+        if (!sender.hasPermission("polls.view")) {
+            sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
+            return true;
+        }
+
         Player player = (Player) sender;
         int page = 0;
 
@@ -51,7 +56,7 @@ public final class PollsCommand implements CommandExecutor {
      * @param player The player to whom the GUI is shown.
      * @param page   The page number to display.
      */
-    private void openPollsGUI(final Player player, final int page) {
+    private void openPollsGUI(final Player player, int page) {
         List<Map<String, String>> openPolls = getOpenPolls();
 
         int pollsPerPage = 28; // 28 slots for polls, 26 slots for borders and navigation

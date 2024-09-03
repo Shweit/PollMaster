@@ -1,6 +1,7 @@
 package com.shweit.poll.commands;
 
 import com.shweit.poll.utils.ConnectionManager;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,12 +22,17 @@ public final class CreatePollCommand implements CommandExecutor, TabExecutor {
     @Override
     public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage("This command can only be used by players.");
+            sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
+            return true;
+        }
+
+        if (!player.hasPermission("polls.create")) {
+            player.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
             return true;
         }
 
         if (args.length < 3) {
-            player.sendMessage("Usage: /createpoll \"<question>\" \"<answer1>\" \"<answer2>\" ... [--multi]");
+            player.sendMessage(ChatColor.RED + "Usage: /createpoll \"<question>\" \"<answer1>\" \"<answer2>\" ... [--multi]");
             return false;
         }
 
