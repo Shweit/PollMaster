@@ -18,8 +18,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public final class Poll extends JavaPlugin {
-
-    public static Connection connection;
     public static FileConfiguration config;
     private static Poll instance;
 
@@ -37,16 +35,7 @@ public final class Poll extends JavaPlugin {
     }
 
     @Override
-    public void onDisable() {
-        try {
-            if (connection != null && !connection.isClosed()) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            Logger.error(e.toString());
-            e.printStackTrace();
-        }
-    }
+    public void onDisable() { }
 
     public static Poll getInstance() {
         return instance;
@@ -62,7 +51,6 @@ public final class Poll extends JavaPlugin {
                 }
 
                 Connection connection = new ConnectionManager().getConnection();
-
                 executeSqlScript(connection, "sql/polls_table.sql");
                 executeSqlScript(connection, "sql/votes_table.sql");
 
@@ -79,7 +67,7 @@ public final class Poll extends JavaPlugin {
         }
     }
 
-    private void executeSqlScript(Connection connection, String fileName) {
+    private void executeSqlScript(final Connection connection, final String fileName) {
         try {
             InputStream is = getResource(fileName);
             if (is == null) {

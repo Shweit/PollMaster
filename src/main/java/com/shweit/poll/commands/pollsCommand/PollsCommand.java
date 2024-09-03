@@ -19,10 +19,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-public class PollsCommand implements CommandExecutor {
+public final class PollsCommand implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
         if (!(sender instanceof Player)) {
             sender.sendMessage("This command can only be used by players.");
             return true;
@@ -51,7 +51,7 @@ public class PollsCommand implements CommandExecutor {
      * @param player The player to whom the GUI is shown.
      * @param page   The page number to display.
      */
-    private void openPollsGUI(Player player, int page) {
+    private void openPollsGUI(final Player player, final int page) {
         List<Map<String, String>> openPolls = getOpenPolls();
 
         int pollsPerPage = 28; // 28 slots for polls, 26 slots for borders and navigation

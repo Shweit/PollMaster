@@ -1,6 +1,5 @@
 package com.shweit.poll.commands;
 
-import com.shweit.poll.Poll;
 import com.shweit.poll.utils.ConnectionManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,11 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class CreatePollCommand implements CommandExecutor, TabExecutor {
+public final class CreatePollCommand implements CommandExecutor, TabExecutor {
     private final Gson gson = new Gson();
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
         if (!(sender instanceof Player player)) {
             sender.sendMessage("This command can only be used by players.");
             return true;
@@ -88,11 +87,11 @@ public class CreatePollCommand implements CommandExecutor, TabExecutor {
         return true;
     }
 
-    private String convertListToJson(List<String> list) {
+    private String convertListToJson(final List<String> list) {
         return gson.toJson(list);
     }
 
-    private void savePollToDatabase(UUID uniqueId, String question, String answersAsJsonString, boolean multi) throws SQLException {
+    private void savePollToDatabase(final UUID uniqueId, final String question, final String answersAsJsonString, final boolean multi) throws SQLException {
         Connection connection = new ConnectionManager().getConnection();
         String insertPollQuery = "INSERT INTO polls (uuid, question, answers, allowMultiple, isOpen) VALUES (?, ?, ?, ?, ?)";
 
@@ -107,7 +106,7 @@ public class CreatePollCommand implements CommandExecutor, TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(final CommandSender commandSender, final Command command, String s, String[] strings) {
+    public List<String> onTabComplete(final CommandSender commandSender, final Command command, final String s, final String[] strings) {
         return List.of();
     }
 }

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class PollDetailGuiListener implements Listener {
+public final class PollDetailGuiListener implements Listener {
     private final Gson gson = new Gson();
 
     /**
@@ -28,7 +28,7 @@ public class PollDetailGuiListener implements Listener {
      * @param event The InventoryClickEvent triggered when a player clicks inside the inventory.
      */
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
+    public void onInventoryClick(final InventoryClickEvent event) {
         Inventory inventory = event.getClickedInventory();
 
         if (inventory == null || !event.getView().getTitle().equals(ChatColor.BLUE + "Poll Details")) {
@@ -90,7 +90,7 @@ public class PollDetailGuiListener implements Listener {
      * @param inventory The inventory containing the poll details.
      * @return The poll ID or -1 if not found.
      */
-    private int getPollIdFromInventory(Inventory inventory) {
+    private int getPollIdFromInventory(final Inventory inventory) {
         ItemStack item = inventory.getItem(13); // Get the item in slot 13
 
         if (item != null && item.hasItemMeta() && item.getItemMeta().hasLore()) {
@@ -121,7 +121,7 @@ public class PollDetailGuiListener implements Listener {
      * @return True if the player has voted, false otherwise.
      * @throws SQLException If an SQL error occurs.
      */
-    private boolean hasVoted(UUID playerUUID, int pollId, Connection connection) throws SQLException {
+    private boolean hasVoted(final UUID playerUUID, final int pollId, final Connection connection) throws SQLException {
         String query = "SELECT answers FROM votes WHERE uuid = ? AND poll_id = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, playerUUID.toString());
@@ -146,7 +146,7 @@ public class PollDetailGuiListener implements Listener {
      * @return True if the answer is selected, false otherwise.
      * @throws SQLException If an SQL error occurs.
      */
-    private boolean isSelectedAnswer(UUID playerUUID, int pollId, String answer, Connection connection) throws SQLException {
+    private boolean isSelectedAnswer(final UUID playerUUID, final int pollId, final String answer, final Connection connection) throws SQLException {
         String query = "SELECT answers FROM votes WHERE uuid = ? AND poll_id = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, playerUUID.toString());
@@ -157,7 +157,7 @@ public class PollDetailGuiListener implements Listener {
                     if (votes != null && !votes.isEmpty()) {
                         if (votes.startsWith("[")) {
                             // JSON array
-                            List<String> voteList = gson.fromJson(votes, new TypeToken<List<String>>() {}.getType());
+                            List<String> voteList = gson.fromJson(votes, new TypeToken<List<String>>() { } .getType());
                             return voteList.contains(answer);
                         } else {
                             // Simple string answer
@@ -178,7 +178,7 @@ public class PollDetailGuiListener implements Listener {
      * @return True if multiple answers are allowed, false otherwise.
      * @throws SQLException If an SQL error occurs.
      */
-    private boolean allowsMultipleAnswers(int pollId, Connection connection) throws SQLException {
+    private boolean allowsMultipleAnswers(final int pollId, final Connection connection) throws SQLException {
         String query = "SELECT allowMultiple FROM polls WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, pollId);
@@ -200,12 +200,12 @@ public class PollDetailGuiListener implements Listener {
      * @param connection  The database connection.
      * @throws SQLException If an SQL error occurs.
      */
-    private void addVote(UUID playerUUID, int pollId, String answer, Connection connection) throws SQLException {
+    private void addVote(final UUID playerUUID, final int pollId, final String answer, final Connection connection) throws SQLException {
         String existingVotes = getPlayerVoteJson(playerUUID, pollId, connection);
         List<String> votes;
 
         if (existingVotes != null && !existingVotes.isEmpty()) {
-            votes = gson.fromJson(existingVotes, new TypeToken<List<String>>() {}.getType());
+            votes = gson.fromJson(existingVotes, new TypeToken<List<String>>() { } .getType());
         } else {
             votes = new ArrayList<>();
         }
@@ -244,7 +244,7 @@ public class PollDetailGuiListener implements Listener {
      * @param connection  The database connection.
      * @throws SQLException If an SQL error occurs.
      */
-    private void removeVote(UUID playerUUID, int pollId, String answer, Connection connection) throws SQLException {
+    private void removeVote(final UUID playerUUID, final int pollId, final String answer, final Connection connection) throws SQLException {
         String existingVotes = getPlayerVoteJson(playerUUID, pollId, connection);
         if (existingVotes == null || existingVotes.isEmpty()) {
             return;
@@ -253,7 +253,7 @@ public class PollDetailGuiListener implements Listener {
         List<String> votes;
         if (existingVotes.startsWith("[")) {
             // JSON array
-            votes = gson.fromJson(existingVotes, new TypeToken<List<String>>() {}.getType());
+            votes = gson.fromJson(existingVotes, new TypeToken<List<String>>() { } .getType());
         } else {
             // Simple string answer
             votes = new ArrayList<>();
@@ -290,7 +290,7 @@ public class PollDetailGuiListener implements Listener {
      * @return The votes as a JSON string, or null if none are found.
      * @throws SQLException If an SQL error occurs.
      */
-    private String getPlayerVoteJson(UUID playerUUID, int pollId, Connection connection) throws SQLException {
+    private String getPlayerVoteJson(final UUID playerUUID, final int pollId, final Connection connection) throws SQLException {
         String query = "SELECT answers FROM votes WHERE uuid = ? AND poll_id = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, playerUUID.toString());

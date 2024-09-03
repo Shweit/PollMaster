@@ -19,7 +19,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-public class PollDetailsCommand {
+public final class PollDetailsCommand {
 
     private final Gson gson = new Gson();
 
@@ -28,7 +28,7 @@ public class PollDetailsCommand {
      * @param player The player for whom the GUI is opened.
      * @param pollId The ID of the poll to display.
      */
-    public void openPollDetails(Player player, int pollId) {
+    public void openPollDetails(final Player player, final int pollId) {
         Inventory pollDetailsInventory = Bukkit.createInventory(null, 54, ChatColor.BLUE + "Poll Details");
 
         PollDetails pollDetails = getPollDetails(pollId);
@@ -97,7 +97,7 @@ public class PollDetailsCommand {
      * @param pollId The ID of the poll to retrieve.
      * @return A PollDetails object containing the poll's details.
      */
-    private PollDetails getPollDetails(int pollId) {
+    private PollDetails getPollDetails(final int pollId) {
         PollDetails pollDetails = null;
         String query = "SELECT question, answers, uuid, created_at, allowMultiple FROM polls WHERE id = ?";
 
@@ -129,13 +129,13 @@ public class PollDetailsCommand {
      * @param pollId The ID of the poll.
      * @return A list of answers the player voted for.
      */
-    private List<String> getPlayerVotes(UUID playerUUID, int pollId) {
+    private List<String> getPlayerVotes(final UUID playerUUID, final int pollId) {
         try (Connection connection = new ConnectionManager().getConnection()) {
             String votesJson = getPlayerVoteJson(playerUUID, pollId, connection);
             if (votesJson != null && !votesJson.isEmpty()) {
                 if (votesJson.startsWith("[")) {
                     // The votes are stored as a JSON array
-                    return gson.fromJson(votesJson, new TypeToken<List<String>>() {}.getType());
+                    return gson.fromJson(votesJson, new TypeToken<List<String>>() { } .getType());
                 } else {
                     // The votes are stored as a simple string
                     List<String> singleVoteList = new ArrayList<>();
@@ -157,7 +157,7 @@ public class PollDetailsCommand {
      * @return The votes as a JSON string.
      * @throws SQLException If an SQL error occurs.
      */
-    private String getPlayerVoteJson(UUID playerUUID, int pollId, Connection connection) throws SQLException {
+    private String getPlayerVoteJson(final UUID playerUUID, final int pollId, final Connection connection) throws SQLException {
         String query = "SELECT answers FROM votes WHERE uuid = ? AND poll_id = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, playerUUID.toString());
@@ -176,7 +176,7 @@ public class PollDetailsCommand {
      * @param pollId The ID of the poll.
      * @return A map of answers to their corresponding vote counts.
      */
-    private Map<String, Integer> getVoteCounts(int pollId) {
+    private Map<String, Integer> getVoteCounts(final int pollId) {
         Map<String, Integer> voteCounts = new HashMap<>();
         String query = "SELECT answers FROM votes WHERE poll_id = ?";
 
@@ -188,7 +188,7 @@ public class PollDetailsCommand {
                     String answers = resultSet.getString("answers");
                     if (answers != null && !answers.isEmpty()) {
                         if (answers.startsWith("[")) {
-                            List<String> answerList = gson.fromJson(answers, new TypeToken<List<String>>() {}.getType());
+                            List<String> answerList = gson.fromJson(answers, new TypeToken<List<String>>() { } .getType());
                             for (String answer : answerList) {
                                 voteCounts.put(answer, voteCounts.getOrDefault(answer, 0) + 1);
                             }
@@ -210,8 +210,8 @@ public class PollDetailsCommand {
      * @param answersJson The JSON string of answers.
      * @return A list of answers.
      */
-    private List<String> decodeAnswers(String answersJson) {
-        Type listType = new TypeToken<List<String>>() {}.getType();
+    private List<String> decodeAnswers(final String answersJson) {
+        Type listType = new TypeToken<List<String>>() { } .getType();
         return gson.fromJson(answersJson, listType);
     }
 }

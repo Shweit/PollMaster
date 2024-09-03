@@ -1,7 +1,6 @@
 package com.shweit.poll.commands.pollsCommand;
 
 import com.shweit.poll.Poll;
-import com.shweit.poll.commands.pollDetailsCommand.PollDetails;
 import com.shweit.poll.commands.pollDetailsCommand.PollDetailsCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -11,10 +10,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public class PollsGuiListener implements Listener {
+public final class PollsGuiListener implements Listener {
 
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
+    public void onInventoryClick(final InventoryClickEvent event) {
         Inventory inventory = event.getClickedInventory();
 
         if (inventory == null || !event.getView().getTitle().startsWith(ChatColor.GREEN + "Open Polls")) {
@@ -41,7 +40,7 @@ public class PollsGuiListener implements Listener {
         }
     }
 
-    private void handlePageChange(InventoryClickEvent event, int change) {
+    private void handlePageChange(final InventoryClickEvent event, final int change) {
         String title = event.getView().getTitle();
         int currentPage = extractPageNumber(title);
         if (currentPage != -1) {
@@ -52,7 +51,7 @@ public class PollsGuiListener implements Listener {
         }
     }
 
-    private int extractPageNumber(String title) {
+    private int extractPageNumber(final String title) {
         try {
             int startIndex = title.indexOf("Page ") + 5;
             int endIndex = title.indexOf("/", startIndex);

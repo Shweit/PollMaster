@@ -2,7 +2,7 @@ package com.shweit.poll.commands.pollDetailsCommand;
 
 import java.util.List;
 
-public class PollDetails {
+public final class PollDetails {
 
     private final int pollId;
     private final String question;
@@ -11,13 +11,20 @@ public class PollDetails {
     private final String createdAt;
     private final boolean multi;
 
-    public PollDetails(int pollId, String question, List<String> answers, String creator, String createdAt, boolean multi) {
-        this.pollId = pollId;
-        this.question = question;
-        this.answers = answers;
-        this.creator = creator;
-        this.createdAt = createdAt;
-        this.multi = multi;
+    public PollDetails(
+            final int pollIdParameter,
+            final String questionParameter,
+            final List<String> answersParameter,
+            final String creatorParameter,
+            final String createdAtParameter,
+            final boolean multiParameter
+    ) {
+        this.pollId = pollIdParameter;
+        this.question = questionParameter;
+        this.answers = answersParameter;
+        this.creator = creatorParameter;
+        this.createdAt = createdAtParameter;
+        this.multi = multiParameter;
     }
 
     public int getPollId() {
