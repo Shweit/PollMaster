@@ -1,13 +1,13 @@
 package com.shweit.poll.commands;
 
 import com.shweit.poll.Poll;
-import com.shweit.poll.utils.Logger;
-import org.bukkit.ChatColor;
+import com.shweit.poll.utils.ConnectionManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import com.google.gson.Gson;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,16 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class CreatePollCommand implements CommandExecutor, TabExecutor
-{
+public class CreatePollCommand implements CommandExecutor, TabExecutor {
+    private final Gson gson = new Gson();
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             sender.sendMessage("This command can only be used by players.");
             return true;
         }
-
-        Player player = (Player) sender;
 
         if (args.length < 3) {
             player.sendMessage("Usage: /createpoll \"<question>\" \"<answer1>\" \"<answer2>\" ... [--multi]");
@@ -90,18 +89,19 @@ public class CreatePollCommand implements CommandExecutor, TabExecutor
     }
 
     private String convertListToJson(List<String> list) {
-        return "[" + String.join(",", list) + "]";
+        return gson.toJson(list);
     }
 
-    private void savePollToDatabase(UUID uniqueId, String string, String answersAsJsonString, boolean multi) throws SQLException {
-        Connection connection = Poll.connection;
-        String insertPollQuery = "INSERT INTO polls (uuid, question, answers, allowMultiple) VALUES (?, ?, ?, ?)";
+    private void savePollToDatabase(UUID uniqueId, String question, String answersAsJsonString, boolean multi) throws SQLException {
+        Connection connection = new ConnectionManager().getConnection();
+        String insertPollQuery = "INSERT INTO polls (uuid, question, answers, allowMultiple, isOpen) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(insertPollQuery)) {
             preparedStatement.setString(1, uniqueId.toString());
-            preparedStatement.setString(2, string);
+            preparedStatement.setString(2, question);
             preparedStatement.setString(3, answersAsJsonString);
             preparedStatement.setBoolean(4, multi);
+            preparedStatement.setBoolean(5, true);
             preparedStatement.executeUpdate();
         }
     }

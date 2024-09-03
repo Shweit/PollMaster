@@ -5,6 +5,11 @@ api-version: '1.21'
 author: Shweit
 
 commands:
+  polls:
+    description: Show all available polls in a GUI.
+    usage: /polls
+    permission: poll.polls
+
   createpoll:
     description: Creates a new poll with a question and up to 10 answers.
     usage: /createpoll "<question>" "<answer1>" "<answer2>" ... [--multi]

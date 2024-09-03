@@ -4,5 +4,8 @@ CREATE TABLE IF NOT EXISTS polls (
     answers TEXT NOT NULL,
     allowMultiple BOOLEAN NOT NULL,
     uuid TEXT NOT NULL,
+    isOpen BOOLEAN NOT NULL DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+

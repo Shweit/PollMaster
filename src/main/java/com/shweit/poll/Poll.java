@@ -1,6 +1,10 @@
 package com.shweit.poll;
 
 import com.shweit.poll.commands.CreatePollCommand;
+import com.shweit.poll.commands.pollDetailsCommand.PollDetailGuiListener;
+import com.shweit.poll.commands.pollsCommand.PollsCommand;
+import com.shweit.poll.commands.pollsCommand.PollsGuiListener;
+import com.shweit.poll.utils.ConnectionManager;
 import com.shweit.poll.utils.Logger;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -10,7 +14,6 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -18,14 +21,19 @@ public final class Poll extends JavaPlugin {
 
     public static Connection connection;
     public static FileConfiguration config;
+    private static Poll instance;
 
     @Override
     public void onEnable() {
         createConfig();
         config = getConfig();
+        instance = this;
 
         setupDatabase();
         getCommand("createpoll").setExecutor(new CreatePollCommand());
+        getCommand("polls").setExecutor(new PollsCommand());
+        getServer().getPluginManager().registerEvents(new PollsGuiListener(), this);
+        getServer().getPluginManager().registerEvents(new PollDetailGuiListener(), this);
     }
 
     @Override
@@ -36,33 +44,34 @@ public final class Poll extends JavaPlugin {
             }
         } catch (SQLException e) {
             Logger.error(e.toString());
+            e.printStackTrace();
         }
     }
 
+    public static Poll getInstance() {
+        return instance;
+    }
+
     private void setupDatabase() {
-        // Überprüfen, ob die Datei polls.sqlite existiert
         File dbFile = new File(getDataFolder(), "polls.sqlite");
 
         if (!dbFile.exists()) {
-            // Wenn sie nicht existiert, erstelle sie
             try {
                 if (!getDataFolder().exists()) {
                     getDataFolder().mkdirs();
                 }
 
-                connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile.getPath());
-                Logger.debug("Connected to new polls.sqlite database.");
+                Connection connection = new ConnectionManager().getConnection();
 
-                // Lade und führe das SQL-Skript aus
-                executeSqlScript(connection, "schema.sql");
+                executeSqlScript(connection, "sql/polls_table.sql");
+                executeSqlScript(connection, "sql/votes_table.sql");
 
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         } else {
-            // Wenn die Datei existiert, verbinde mit der Datenbank
             try {
-                connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile.getPath());
+                Connection connection = new ConnectionManager().getConnection();
                 Logger.debug("Connected to existing polls.sqlite database.");
             } catch (SQLException e) {
                 Logger.error(e.toString());
@@ -72,7 +81,6 @@ public final class Poll extends JavaPlugin {
 
     private void executeSqlScript(Connection connection, String fileName) {
         try {
-            // Lade die SQL-Datei aus dem Ressourcen-Ordner
             InputStream is = getResource(fileName);
             if (is == null) {
                 Logger.error("SQL file not found: " + fileName);
