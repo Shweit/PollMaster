@@ -62,18 +62,15 @@ public final class PollDetailGuiListener implements Listener {
                 if (isSelectedAnswer(playerUUID, pollId, answer, connection)) {
                     // Remove the answer if it is already selected
                     removeVote(playerUUID, pollId, answer, connection);
-                    player.sendMessage(ChatColor.RED + "You deselected: " + answer);
                 } else if (allowsMultipleAnswers(pollId, connection)) {
                     // Add a new answer if multiple answers are allowed
                     addVote(playerUUID, pollId, answer, connection);
-                    player.sendMessage(ChatColor.GREEN + "You selected: " + answer);
                 } else {
                     player.sendMessage(ChatColor.RED + "You have already voted. Multiple answers are not allowed.");
                 }
             } else {
                 // Add the answer if no answer has been selected yet
                 addVote(playerUUID, pollId, answer, connection);
-                player.sendMessage(ChatColor.GREEN + "You selected: " + answer);
             }
         } catch (SQLException e) {
             e.printStackTrace();
