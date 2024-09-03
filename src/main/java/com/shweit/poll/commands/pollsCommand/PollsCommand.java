@@ -28,6 +28,11 @@ public final class PollsCommand implements CommandExecutor {
             return true;
         }
 
+        if (!sender.hasPermission("polls.view")) {
+            sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
+            return true;
+        }
+
         Player player = (Player) sender;
         int page = 0;
 
@@ -57,11 +62,13 @@ public final class PollsCommand implements CommandExecutor {
         int pollsPerPage = 28; // 28 slots for polls, 26 slots for borders and navigation
         int totalPages = (int) Math.ceil((double) openPolls.size() / pollsPerPage);
 
-        if (page < 0 || page >= totalPages) {
-            page = 0;
+        int currentPage = page; // Lokale Variable für die Modifikation
+
+        if (currentPage < 0 || currentPage >= totalPages) {
+            currentPage = 0;
         }
 
-        Inventory pollsInventory = Bukkit.createInventory(null, 54, ChatColor.GREEN + "Open Polls (Page " + (page + 1) + "/" + totalPages + ")");
+        Inventory pollsInventory = Bukkit.createInventory(null, 54, ChatColor.GREEN + "Open Polls (Page " + (currentPage + 1) + "/" + totalPages + ")");
 
         // Add border around the inventory
         ItemStack borderItem = new ItemStack(Material.LIGHT_GRAY_STAINED_GLASS_PANE);
@@ -75,7 +82,7 @@ public final class PollsCommand implements CommandExecutor {
             }
         }
 
-        int start = page * pollsPerPage;
+        int start = currentPage * pollsPerPage;
         int end = Math.min(start + pollsPerPage, openPolls.size());
 
         for (int i = start; i < end; i++) {
@@ -98,7 +105,7 @@ public final class PollsCommand implements CommandExecutor {
         }
 
         // Add pagination items
-        if (page > 0) {
+        if (currentPage > 0) {
             ItemStack previousPage = new ItemStack(Material.ARROW);
             ItemMeta previousMeta = previousPage.getItemMeta();
             previousMeta.setDisplayName(ChatColor.AQUA + "Previous Page");
@@ -106,7 +113,7 @@ public final class PollsCommand implements CommandExecutor {
             pollsInventory.setItem(45, previousPage);
         }
 
-        if (page < totalPages - 1) {
+        if (currentPage < totalPages - 1) {
             ItemStack nextPage = new ItemStack(Material.ARROW);
             ItemMeta nextMeta = nextPage.getItemMeta();
             nextMeta.setDisplayName(ChatColor.AQUA + "Next Page");
@@ -116,6 +123,7 @@ public final class PollsCommand implements CommandExecutor {
 
         player.openInventory(pollsInventory);
     }
+
 
     /**
      * Retrieves a list of open polls from the database.

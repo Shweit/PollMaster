@@ -9,9 +9,9 @@ commands:
   polls:
     description: Show all available polls in a GUI.
     usage: /polls
-    permission: poll.polls
+    permission: poll.view
 
   createpoll:
     description: Creates a new poll with a question and up to 10 answers.
     usage: /createpoll "<question>" "<answer1>" "<answer2>" ... [--multi]
-    permission: poll.createpoll
+    permission: poll.create
