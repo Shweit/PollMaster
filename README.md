@@ -1,5 +1,5 @@
 # PollMaster Plugin
-<img src="https://img.shields.io/github/actions/workflow/status/Shweit/PollMaster/runtime.yml" /> <img src="https://img.shields.io/github/v/release/PollMaster/MinecraftServerAPI" /> <img src="https://img.shields.io/github/license/Shweit/PollMaster" />
+<img src="https://img.shields.io/github/actions/workflow/status/Shweit/PollMaster/runtime.yml" /> <img src="https://img.shields.io/github/v/release/Shweit/PollMaster" /> <img src="https://img.shields.io/github/license/Shweit/PollMaster" />
 
 ## Overview
 The PollMaster Plugin is a versatile and easy-to-use tool for Minecraft servers, allowing administrators to create and manage polls directly in-game. With this plugin, server owners can engage their players by gathering feedback, making decisions, and encouraging participation in server activities.
