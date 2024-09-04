@@ -1,6 +1,7 @@
 package com.shweit.poll.commands.pollsCommand;
 
 import com.shweit.poll.Poll;
+import com.shweit.poll.commands.DeletePollCommand;
 import com.shweit.poll.commands.pollDetailsCommand.PollDetailsCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -36,7 +37,15 @@ public final class PollsGuiListener implements Listener {
         } else {
             String lore = clickedItem.getItemMeta().getLore().get(2);
             int pollId = Integer.parseInt(ChatColor.stripColor(lore).replace("ID: ", ""));
-            new PollDetailsCommand().openPollDetails((Player) event.getWhoClicked(), pollId);
+
+            if (event.getClick().isLeftClick()) {
+                new PollDetailsCommand().openPollDetails((Player) event.getWhoClicked(), pollId);
+            } else if (event.getClick().isRightClick()) {
+                boolean success = new DeletePollCommand().deletePoll((Player) event.getWhoClicked(), pollId);
+                if (success) {
+                    new PollsCommand().openPollsGUI((Player) event.getWhoClicked(), 0);
+                }
+            }
         }
     }
 

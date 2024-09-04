@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -36,6 +37,11 @@ public final class PollDetailsCommand {
         Inventory pollDetailsInventory = Bukkit.createInventory(null, 54, ChatColor.BLUE + "Poll Details");
 
         PollDetails pollDetails = getPollDetails(pollId);
+        if (pollDetails == null) {
+            player.sendMessage(ChatColor.RED + "Poll ID " + pollId + " not found.");
+            return;
+        }
+
         List<String> answers = pollDetails.getAnswers();
         List<String> playerVotes = getPlayerVotes(player.getUniqueId(), pollId);
         Map<String, Integer> voteCounts = getVoteCounts(pollId);
@@ -68,9 +74,18 @@ public final class PollDetailsCommand {
             questionLore.add("");
             questionLore.add(ChatColor.GREEN + "You can vote for multiple answers.");
         }
+
+        if (creator.getUniqueId() == player.getUniqueId()) {
+            questionLore.add("");
+            questionLore.add(ChatColor.RED + "You cannot vote on your own poll.");
+        }
         questionMeta.setLore(questionLore);
 
         questionItem.setItemMeta(questionMeta);
+        if (creator.getUniqueId() == player.getUniqueId()) {
+            questionItem.addUnsafeEnchantment(Enchantment.UNBREAKING, 1);
+        }
+
         pollDetailsInventory.setItem(13, questionItem);
 
         // Add the answers

@@ -2,6 +2,8 @@ package com.shweit.poll.commands.pollDetailsCommand;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.shweit.poll.commands.DeletePollCommand;
+import com.shweit.poll.commands.pollsCommand.PollsCommand;
 import com.shweit.poll.utils.ConnectionManager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -43,6 +45,17 @@ public final class PollDetailGuiListener implements Listener {
         }
 
         String displayName = clickedItem.getItemMeta().getDisplayName();
+        if (displayName.startsWith(ChatColor.GOLD.toString())) {
+            if (event.isRightClick()) {
+                String lore = clickedItem.getItemMeta().getLore().get(2);
+                int pollId = Integer.parseInt(ChatColor.stripColor(lore).replace("ID: ", ""));
+                boolean success = new DeletePollCommand().deletePoll((Player) event.getWhoClicked(), pollId);
+                if (success) {
+                    new PollsCommand().openPollsGUI((Player) event.getWhoClicked(), 0);
+                }
+            }
+        }
+
         if (!displayName.startsWith(ChatColor.YELLOW.toString())) {
             return;
         }

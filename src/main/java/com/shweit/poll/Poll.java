@@ -1,6 +1,7 @@
 package com.shweit.poll;
 
 import com.shweit.poll.commands.CreatePollCommand;
+import com.shweit.poll.commands.DeletePollCommand;
 import com.shweit.poll.commands.VoteCommand;
 import com.shweit.poll.commands.pollDetailsCommand.PollDetailGuiListener;
 import com.shweit.poll.commands.pollsCommand.PollsCommand;
@@ -32,6 +33,7 @@ public final class Poll extends JavaPlugin {
         getCommand("createpoll").setExecutor(new CreatePollCommand());
         getCommand("polls").setExecutor(new PollsCommand());
         getCommand("vote").setExecutor(new VoteCommand());
+        getCommand("endpoll").setExecutor(new DeletePollCommand());
         getServer().getPluginManager().registerEvents(new PollsGuiListener(), this);
         getServer().getPluginManager().registerEvents(new PollDetailGuiListener(), this);
     }
