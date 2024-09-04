@@ -3,6 +3,7 @@ package com.shweit.pollmaster.commands.pollDetailsCommand;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.shweit.pollmaster.utils.ConnectionManager;
+import com.shweit.pollmaster.utils.LangUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -31,14 +32,14 @@ public final class PollDetailsCommand {
      */
     public void openPollDetails(final Player player, final int pollId) {
         if (!player.hasPermission("pollmaster.vote")) {
-            player.sendMessage(ChatColor.RED + "You do not have permission to view poll details.");
+            player.sendMessage(ChatColor.RED + LangUtil.getTranslation("command_no_permission"));
         }
 
-        Inventory pollDetailsInventory = Bukkit.createInventory(null, 54, ChatColor.BLUE + "Poll Details");
+        Inventory pollDetailsInventory = Bukkit.createInventory(null, 54, ChatColor.BLUE + LangUtil.getTranslation("poll_details"));
 
         PollDetails pollDetails = getPollDetails(pollId);
         if (pollDetails == null) {
-            player.sendMessage(ChatColor.RED + "Poll ID " + pollId + " not found.");
+            player.sendMessage(ChatColor.RED + LangUtil.getTranslation("poll_not_found"));
             return;
         }
 
@@ -65,19 +66,18 @@ public final class PollDetailsCommand {
 
         List<String> questionLore = new ArrayList<>();
         OfflinePlayer creator = Bukkit.getOfflinePlayer(UUID.fromString(pollDetails.getCreator()));
-        questionLore.add(ChatColor.GRAY + "Created by: " + ChatColor.GREEN + creator.getName());
-        questionLore.add(ChatColor.GRAY + "Created on: " + ChatColor.GREEN + pollDetails.getCreatedAt());
+        questionLore.add(ChatColor.GRAY + LangUtil.getTranslation("created_by") + ": " + ChatColor.GREEN + creator.getName());
+        questionLore.add(ChatColor.GRAY + LangUtil.getTranslation("created_on") + ": " + ChatColor.GREEN + pollDetails.getCreatedAt());
         questionLore.add(ChatColor.GRAY + "ID: " + ChatColor.GREEN + pollDetails.getPollId());
         questionLore.add("");
-        questionLore.add(ChatColor.GRAY + "Your vote: " + ChatColor.AQUA + (!playerVotes.isEmpty() ? String.join(", ", playerVotes) : "None"));
+        questionLore.add(ChatColor.GRAY + LangUtil.getTranslation("your_vote") + ": " + ChatColor.AQUA + (!playerVotes.isEmpty() ? String.join(", ", playerVotes) : "None"));
         if (pollDetails.isMulti()) {
             questionLore.add("");
-            questionLore.add(ChatColor.GREEN + "You can vote for multiple answers.");
+            questionLore.add(ChatColor.GREEN + LangUtil.getTranslation("vote_multiple_allowed"));
         }
 
         if (creator.getUniqueId() == player.getUniqueId()) {
-            questionLore.add("");
-            questionLore.add(ChatColor.RED + "You cannot vote on your own poll.");
+            questionLore.add(ChatColor.RED + LangUtil.getTranslation("delete_poll_lore"));
         }
         questionMeta.setLore(questionLore);
 

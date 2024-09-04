@@ -1,6 +1,7 @@
 package com.shweit.pollmaster.commands;
 
 import com.shweit.pollmaster.utils.ConnectionManager;
+import com.shweit.pollmaster.utils.LangUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -24,17 +25,17 @@ public final class CreatePollCommand implements CommandExecutor, TabExecutor {
     @Override
     public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
+            sender.sendMessage(ChatColor.RED + LangUtil.getTranslation("command_no_player"));
             return true;
         }
 
         if (!player.hasPermission("pollmaster.create")) {
-            player.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
+            player.sendMessage(ChatColor.RED + LangUtil.getTranslation("command_no_permission"));
             return true;
         }
 
         if (args.length < 3) {
-            player.sendMessage(ChatColor.RED + "Usage: /createpoll \"<question>\" \"<answer1>\" \"<answer2>\" ... [--multi]");
+            player.sendMessage(ChatColor.RED + LangUtil.getTranslation("usage") + "/createpoll \"<question>\" \"<answer1>\" \"<answer2>\" ... [--multi]");
             return false;
         }
 
@@ -76,7 +77,7 @@ public final class CreatePollCommand implements CommandExecutor, TabExecutor {
         }
 
         if (question == null || answers.size() < 2) {
-            player.sendMessage("You must provide a valid question and at least two answers.");
+            player.sendMessage(LangUtil.getTranslation("invalid_arguments_count"));
             return false;
         }
 
@@ -87,9 +88,9 @@ public final class CreatePollCommand implements CommandExecutor, TabExecutor {
         int id = 0;
         try {
             id = savePollToDatabase(player.getUniqueId(), question, optionsAsJsonString, allowMultipleAnswers);
-            player.sendMessage("Poll created successfully!");
+            player.sendMessage(LangUtil.getTranslation("poll_created"));
         } catch (SQLException e) {
-            player.sendMessage("An error occurred while saving the poll.");
+            player.sendMessage(LangUtil.getTranslation("error_while_creating_poll"));
             e.printStackTrace();
         }
 

@@ -9,6 +9,7 @@ import com.shweit.pollmaster.commands.pollsCommand.PollsCommand;
 import com.shweit.pollmaster.commands.pollsCommand.PollsGuiListener;
 import com.shweit.pollmaster.utils.CheckForUpdate;
 import com.shweit.pollmaster.utils.ConnectionManager;
+import com.shweit.pollmaster.utils.LangUtil;
 import com.shweit.pollmaster.utils.Logger;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -30,6 +31,8 @@ public final class PollMaster extends JavaPlugin {
         createConfig();
         config = getConfig();
         instance = this;
+
+        LangUtil.initialize(this);
 
         setupDatabase();
         getCommand("createpoll").setExecutor(new CreatePollCommand());
@@ -107,6 +110,14 @@ public final class PollMaster extends JavaPlugin {
         File configFile = new File(getDataFolder(), "config.yml");
         if (!configFile.exists())  {
             saveResource("config.yml", false);
+        }
+
+        File langFolder = new File(getDataFolder(), "lang");
+        if (!langFolder.exists()) {
+            langFolder.mkdirs();
+
+            saveResource("lang/en.yml", false);
+            saveResource("lang/de.yml", false);
         }
     }
 }

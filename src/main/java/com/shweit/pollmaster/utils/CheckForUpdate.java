@@ -1,6 +1,7 @@
 package com.shweit.pollmaster.utils;
 
 import com.shweit.pollmaster.PollMaster;
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -37,9 +38,9 @@ public final class CheckForUpdate implements Listener {
         if (event.getPlayer().hasPermission("pollmaster.version")) {
             Logger.debug("Checking for plugin update...");
             if (checkForPluginUpdate()) {
-                event.getPlayer().sendMessage("§aA new version of the MinecraftServerAPI plugin is available");
-                event.getPlayer().sendMessage("§aCurrent version: §f" + PollMaster.getInstance().getDescription().getVersion());
-                event.getPlayer().sendMessage("§aLatest version: §f" + latestVersion);
+                event.getPlayer().sendMessage(ChatColor.GREEN + LangUtil.getTranslation("update_available_player_join"));
+                event.getPlayer().sendMessage(ChatColor.GREEN + LangUtil.getTranslation("current_version") + ChatColor.GOLD + PollMaster.getInstance().getDescription().getVersion());
+                event.getPlayer().sendMessage(ChatColor.GREEN + LangUtil.getTranslation("new_version") + ChatColor.GOLD + latestVersion);
             }
         }
     }
