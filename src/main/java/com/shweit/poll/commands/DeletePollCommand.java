@@ -2,7 +2,6 @@ package com.shweit.poll.commands;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.shweit.poll.commands.pollsCommand.PollsCommand;
 import com.shweit.poll.utils.ConnectionManager;
 import com.shweit.poll.utils.Logger;
 import org.bukkit.ChatColor;
@@ -18,10 +17,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-public class DeletePollCommand implements CommandExecutor, TabExecutor {
+public final class DeletePollCommand implements CommandExecutor, TabExecutor {
 
 
-    public boolean deletePoll(Player whoClicked, int pollId) {
+    public boolean deletePoll(final Player whoClicked, final int pollId) {
         Gson gson = new Gson(); // To handle JSON parsing
 
         // Connect to the database
@@ -56,7 +55,7 @@ public class DeletePollCommand implements CommandExecutor, TabExecutor {
                     if (resultSet.next()) {
                         pollQuestion = resultSet.getString("question");
                         // Parse answers from JSON array
-                        possibleAnswers = gson.fromJson(resultSet.getString("answers"), new TypeToken<List<String>>(){}.getType());
+                        possibleAnswers = gson.fromJson(resultSet.getString("answers"), new TypeToken<List<String>>() { } .getType());
                     }
                 }
             }
@@ -69,7 +68,7 @@ public class DeletePollCommand implements CommandExecutor, TabExecutor {
                     while (resultSet.next()) {
                         // Get the voted answers stored as JSON array
                         String answersJson = resultSet.getString("answers");
-                        List<String> votedAnswers = gson.fromJson(answersJson, new TypeToken<List<String>>(){}.getType());
+                        List<String> votedAnswers = gson.fromJson(answersJson, new TypeToken<List<String>>() { } .getType());
                         for (String votedAnswer : votedAnswers) {
                             votedAnswer = votedAnswer.trim();
                             voteCounts.put(votedAnswer, voteCounts.getOrDefault(votedAnswer, 0) + 1);
@@ -144,7 +143,7 @@ public class DeletePollCommand implements CommandExecutor, TabExecutor {
 
 
     @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
+    public boolean onCommand(final CommandSender commandSender, final Command command, final String s, final String[] args) {
         if (!(commandSender instanceof Player player)) {
             commandSender.sendMessage("This command can only be used by players.");
             return true;
@@ -155,7 +154,7 @@ public class DeletePollCommand implements CommandExecutor, TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] args) {
+    public List<String> onTabComplete(final CommandSender commandSender, final Command command, final String s, final String[] args) {
         if (args.length == 1) {
             Logger.debug("Tab completion for DeletePollCommand");
             return getPlayerPolls((Player) commandSender);
