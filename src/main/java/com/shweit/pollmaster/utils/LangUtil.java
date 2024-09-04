@@ -50,4 +50,17 @@ public class LangUtil {
     public static String getTranslation(String key) {
         return translations.getOrDefault(key, key); // Fallback to key itself if translation is not found
     }
+
+    // Retrieve translation with placeholders replaced by values from a Map
+    public static String getTranslation(String key, Map<String, String> params) {
+        String message = getTranslation(key);
+
+        if (params != null && !params.isEmpty()) {
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                message = message.replace("${" + entry.getKey() + "}", entry.getValue());
+            }
+        }
+
+        return message;
+    }
 }

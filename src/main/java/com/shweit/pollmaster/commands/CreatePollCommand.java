@@ -15,9 +15,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public final class CreatePollCommand implements CommandExecutor, TabExecutor {
     private final Gson gson = new Gson();
@@ -96,8 +94,13 @@ public final class CreatePollCommand implements CommandExecutor, TabExecutor {
 
         int finalId = id;
         Bukkit.getOnlinePlayers().forEach(p -> {
-            p.sendMessage(ChatColor.GREEN + "A new poll has been created by " + player.getName() + ".");
-            p.sendMessage(ChatColor.GREEN + "To view the poll, type /vote " + finalId);
+            Map<String, String> params = new HashMap<>();
+            params.put("playername", p.getName());
+            p.sendMessage(ChatColor.GREEN + LangUtil.getTranslation("new_poll_created", params));
+
+            params = new HashMap<>();
+            params.put("pollid", String.valueOf(finalId));
+            p.sendMessage(ChatColor.GREEN + LangUtil.getTranslation("new_poll_created_subtitle", params));
         });
 
         return true;
