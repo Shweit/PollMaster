@@ -2,10 +2,12 @@ package com.shweit.pollmaster;
 
 import com.shweit.pollmaster.commands.CreatePollCommand;
 import com.shweit.pollmaster.commands.DeletePollCommand;
+import com.shweit.pollmaster.commands.VersionCommand;
 import com.shweit.pollmaster.commands.VoteCommand;
 import com.shweit.pollmaster.commands.pollDetailsCommand.PollDetailGuiListener;
 import com.shweit.pollmaster.commands.pollsCommand.PollsCommand;
 import com.shweit.pollmaster.commands.pollsCommand.PollsGuiListener;
+import com.shweit.pollmaster.utils.CheckForUpdate;
 import com.shweit.pollmaster.utils.ConnectionManager;
 import com.shweit.pollmaster.utils.Logger;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -34,8 +36,11 @@ public final class PollMaster extends JavaPlugin {
         getCommand("polls").setExecutor(new PollsCommand());
         getCommand("vote").setExecutor(new VoteCommand());
         getCommand("endpoll").setExecutor(new DeletePollCommand());
+        getCommand("pollmaster").setExecutor(new VersionCommand());
+
         getServer().getPluginManager().registerEvents(new PollsGuiListener(), this);
         getServer().getPluginManager().registerEvents(new PollDetailGuiListener(), this);
+        getServer().getPluginManager().registerEvents(new CheckForUpdate(), this);
     }
 
     @Override
