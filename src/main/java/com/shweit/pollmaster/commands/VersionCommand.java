@@ -12,7 +12,7 @@ import org.bukkit.command.TabExecutor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VersionCommand implements CommandExecutor, TabExecutor {
+public final class VersionCommand implements CommandExecutor, TabExecutor {
 
     @Override
     public boolean onCommand(final CommandSender commandSender, final Command command, final String s, final String[] args) {
@@ -36,9 +36,10 @@ public class VersionCommand implements CommandExecutor, TabExecutor {
                 }
 
                 return true;
-        }
 
-        return false;
+            default:
+                return false;
+        }
     }
 
     @Override
