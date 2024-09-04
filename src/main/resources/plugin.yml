@@ -8,7 +8,7 @@ author: Shweit
 commands:
   polls:
     description: Show all available polls in a GUI.
-    usage: /polls
+    usage: /polls [page]
     permission: poll.view
 
   createpoll:
@@ -20,3 +20,8 @@ commands:
     description: Open a poll to vote on.
     usage: /vote <poll_id>
     permission: poll.vote
+
+  endpoll:
+    description: End a poll and display the results.
+    usage: /endpoll <poll_id>
+    permission: poll.end

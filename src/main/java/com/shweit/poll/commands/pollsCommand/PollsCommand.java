@@ -7,6 +7,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -56,7 +57,7 @@ public final class PollsCommand implements CommandExecutor {
      * @param player The player to whom the GUI is shown.
      * @param page   The page number to display.
      */
-    private void openPollsGUI(final Player player, final int page) {
+    public void openPollsGUI(final Player player, final int page) {
         List<Map<String, String>> openPolls = getOpenPolls();
 
         int pollsPerPage = 28; // 28 slots for polls, 26 slots for borders and navigation
@@ -98,9 +99,17 @@ public final class PollsCommand implements CommandExecutor {
             lore.add(ChatColor.GRAY + "ID: " + ChatColor.GREEN + poll.get("id"));
             lore.add("");
             lore.add(ChatColor.GREEN + "Click to vote!");
+
+            if (creator.getUniqueId() == player.getUniqueId()) {
+                lore.add("");
+                lore.add(ChatColor.RED + "To delete this poll, right-click it.");
+            }
             meta.setLore(lore);
 
             pollItem.setItemMeta(meta);
+            if (creator.getUniqueId() == player.getUniqueId()) {
+                pollItem.addUnsafeEnchantment(Enchantment.UNBREAKING, 1);
+            }
             pollsInventory.addItem(pollItem);
         }
 
