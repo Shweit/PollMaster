@@ -3,6 +3,7 @@ package com.shweit.pollmaster.commands.pollsCommand;
 import com.shweit.pollmaster.PollMaster;
 import com.shweit.pollmaster.commands.DeletePollCommand;
 import com.shweit.pollmaster.commands.pollDetailsCommand.PollDetailsCommand;
+import com.shweit.pollmaster.utils.LangUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,7 +18,7 @@ public final class PollsGuiListener implements Listener {
     public void onInventoryClick(final InventoryClickEvent event) {
         Inventory inventory = event.getClickedInventory();
 
-        if (inventory == null || !event.getView().getTitle().startsWith(ChatColor.GREEN + "Open Polls")) {
+        if (inventory == null || !event.getView().getTitle().startsWith(ChatColor.GREEN + LangUtil.getTranslation("open_polls"))) {
             return;
         }
 
@@ -30,9 +31,9 @@ public final class PollsGuiListener implements Listener {
 
         String displayName = clickedItem.getItemMeta().getDisplayName();
 
-        if (displayName.equals(ChatColor.AQUA + "Next Page")) {
+        if (displayName.equals(ChatColor.AQUA + LangUtil.getTranslation("next_page"))) {
             handlePageChange(event, 1);
-        } else if (displayName.equals(ChatColor.AQUA + "Previous Page")) {
+        } else if (displayName.equals(ChatColor.AQUA + LangUtil.getTranslation("previous_page"))) {
             handlePageChange(event, -1);
         } else {
             String lore = clickedItem.getItemMeta().getLore().get(2);
@@ -62,7 +63,7 @@ public final class PollsGuiListener implements Listener {
 
     private int extractPageNumber(final String title) {
         try {
-            int startIndex = title.indexOf("Page ") + 5;
+            int startIndex = title.indexOf(LangUtil.getTranslation("page") + " ") + 5;
             int endIndex = title.indexOf("/", startIndex);
             if (startIndex > 0 && endIndex > startIndex) {
                 return Integer.parseInt(title.substring(startIndex, endIndex).trim());

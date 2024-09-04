@@ -2,7 +2,7 @@ package com.shweit.pollmaster.commands;
 
 import com.shweit.pollmaster.PollMaster;
 import com.shweit.pollmaster.utils.CheckForUpdate;
-import com.shweit.pollmaster.utils.Logger;
+import com.shweit.pollmaster.utils.LangUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,23 +16,23 @@ public final class VersionCommand implements CommandExecutor, TabExecutor {
 
     @Override
     public boolean onCommand(final CommandSender commandSender, final Command command, final String s, final String[] args) {
-        Logger.debug("VersionCommand.onCommand()");
         switch (args[0]) {
             case "version":
-                commandSender.sendMessage(ChatColor.GREEN + "PollMaster version: " + ChatColor.GOLD + PollMaster.getInstance().getDescription().getVersion());
+                commandSender.sendMessage(ChatColor.GREEN + LangUtil.getTranslation("pollmaster_version")
+                        + ChatColor.GOLD + PollMaster.getInstance().getDescription().getVersion());
                 commandSender.sendMessage("");
-                commandSender.sendMessage(ChatColor.GREEN + "Check for updates...");
+                commandSender.sendMessage(ChatColor.GREEN + LangUtil.getTranslation("checking_for_updates"));
 
                 // Check for updates
                 CheckForUpdate checkForUpdate = new CheckForUpdate();
                 boolean updateAvailable = checkForUpdate.checkForPluginUpdate();
                 if (updateAvailable) {
-                    commandSender.sendMessage(ChatColor.GREEN + "Update available! New Version: "
+                    commandSender.sendMessage(ChatColor.GREEN + LangUtil.getTranslation("update_available")
                             + ChatColor.GOLD + PollMaster.getInstance().getDescription().getVersion()
                             + ChatColor.GREEN + " -> " + ChatColor.GOLD + checkForUpdate.latestVersion
                     );
                 } else {
-                    commandSender.sendMessage(ChatColor.GREEN + "No updates available.");
+                    commandSender.sendMessage(ChatColor.GREEN + LangUtil.getTranslation("no_updates_available"));
                 }
 
                 return true;

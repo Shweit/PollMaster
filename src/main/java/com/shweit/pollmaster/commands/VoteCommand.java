@@ -2,6 +2,7 @@ package com.shweit.pollmaster.commands;
 
 import com.shweit.pollmaster.commands.pollDetailsCommand.PollDetailsCommand;
 import com.shweit.pollmaster.utils.ConnectionManager;
+import com.shweit.pollmaster.utils.LangUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,12 +26,12 @@ public final class VoteCommand implements CommandExecutor, TabExecutor {
     @Override
     public boolean onCommand(final CommandSender commandSender, final Command command, final String s, final String[] args) {
         if (!(commandSender instanceof Player player)) {
-            commandSender.sendMessage(ChatColor.RED + "You must be a player to execute this command.");
+            commandSender.sendMessage(ChatColor.RED + LangUtil.getTranslation("command_no_player"));
             return false;
         }
 
         if (!player.hasPermission("pollmaster.vote")) {
-            player.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
+            player.sendMessage(ChatColor.RED + LangUtil.getTranslation("command_no_permission"));
             return false;
         }
 

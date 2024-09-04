@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import com.shweit.pollmaster.commands.DeletePollCommand;
 import com.shweit.pollmaster.commands.pollsCommand.PollsCommand;
 import com.shweit.pollmaster.utils.ConnectionManager;
+import com.shweit.pollmaster.utils.LangUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,7 +34,7 @@ public final class PollDetailGuiListener implements Listener {
     public void onInventoryClick(final InventoryClickEvent event) {
         Inventory inventory = event.getClickedInventory();
 
-        if (inventory == null || !event.getView().getTitle().equals(ChatColor.BLUE + "Poll Details")) {
+        if (inventory == null || !event.getView().getTitle().equals(ChatColor.BLUE + LangUtil.getTranslation("poll_details"))) {
             return;
         }
 
@@ -66,7 +67,7 @@ public final class PollDetailGuiListener implements Listener {
         int pollId = getPollIdFromInventory(inventory);
 
         if (pollId == -1) {
-            player.sendMessage(ChatColor.RED + "Could not find the poll ID.");
+            player.sendMessage(ChatColor.RED + LangUtil.getTranslation("poll_not_found"));
             return;
         }
 
@@ -79,7 +80,7 @@ public final class PollDetailGuiListener implements Listener {
                     // Add a new answer if multiple answers are allowed
                     addVote(playerUUID, pollId, answer, connection);
                 } else {
-                    player.sendMessage(ChatColor.RED + "You have already voted. Multiple answers are not allowed.");
+                    player.sendMessage(ChatColor.RED + LangUtil.getTranslation("already_voted"));
                 }
             } else {
                 // Add the answer if no answer has been selected yet
@@ -87,7 +88,7 @@ public final class PollDetailGuiListener implements Listener {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            player.sendMessage(ChatColor.RED + "An error occurred while processing your vote.");
+            player.sendMessage(ChatColor.RED + LangUtil.getTranslation("vote_error"));
         }
 
         // Reopen the poll details inventory to reflect the updated votes

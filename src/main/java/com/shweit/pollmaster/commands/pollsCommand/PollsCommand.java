@@ -1,6 +1,7 @@
 package com.shweit.pollmaster.commands.pollsCommand;
 
 import com.shweit.pollmaster.utils.ConnectionManager;
+import com.shweit.pollmaster.utils.LangUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -25,12 +26,12 @@ public final class PollsCommand implements CommandExecutor {
     @Override
     public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("This command can only be used by players.");
+            sender.sendMessage(ChatColor.RED + LangUtil.getTranslation("command_no_player"));
             return true;
         }
 
         if (!sender.hasPermission("pollmaster.view")) {
-            sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
+            sender.sendMessage(ChatColor.RED + LangUtil.getTranslation("command_no_permission"));
             return true;
         }
 
@@ -41,7 +42,7 @@ public final class PollsCommand implements CommandExecutor {
             try {
                 page = Integer.parseInt(args[0]) - 1;
             } catch (NumberFormatException e) {
-                player.sendMessage(ChatColor.RED + "Invalid page number.");
+                player.sendMessage(ChatColor.RED + LangUtil.getTranslation("invalid_page_number"));
                 return false;
             }
         }
@@ -69,7 +70,11 @@ public final class PollsCommand implements CommandExecutor {
             currentPage = 0;
         }
 
-        Inventory pollsInventory = Bukkit.createInventory(null, 54, ChatColor.GREEN + "Open Polls (Page " + (currentPage + 1) + "/" + totalPages + ")");
+        Inventory pollsInventory = Bukkit.createInventory(null, 54,
+                ChatColor.GREEN + LangUtil.getTranslation("open_polls")
+                + " (" + LangUtil.getTranslation("page") + " " + (currentPage + 1)
+                + "/" + totalPages + ")"
+        );
 
         // Add border around the inventory
         ItemStack borderItem = new ItemStack(Material.LIGHT_GRAY_STAINED_GLASS_PANE);
@@ -94,15 +99,15 @@ public final class PollsCommand implements CommandExecutor {
 
             List<String> lore = new ArrayList<>();
             OfflinePlayer creator = Bukkit.getOfflinePlayer(UUID.fromString(poll.get("creator")));
-            lore.add(ChatColor.GRAY + "Created by: " + ChatColor.GREEN + (creator.getName() != null ? creator.getName() : "Unknown"));
-            lore.add(ChatColor.GRAY + "Created on: " + ChatColor.GREEN + poll.get("created_at"));
+            lore.add(ChatColor.GRAY + LangUtil.getTranslation("created_by") + ": " + ChatColor.GREEN + (creator.getName() != null ? creator.getName() : "Unknown"));
+            lore.add(ChatColor.GRAY + LangUtil.getTranslation("created_on") + ": " + ChatColor.GREEN + poll.get("created_at"));
             lore.add(ChatColor.GRAY + "ID: " + ChatColor.GREEN + poll.get("id"));
             lore.add("");
-            lore.add(ChatColor.GREEN + "Click to vote!");
+            lore.add(ChatColor.GREEN + LangUtil.getTranslation("click_to_vote"));
 
             if (creator.getUniqueId() == player.getUniqueId()) {
                 lore.add("");
-                lore.add(ChatColor.RED + "To delete this poll, right-click it.");
+                lore.add(ChatColor.RED + LangUtil.getTranslation("delete_poll_lore"));
             }
             meta.setLore(lore);
 
@@ -117,7 +122,7 @@ public final class PollsCommand implements CommandExecutor {
         if (currentPage > 0) {
             ItemStack previousPage = new ItemStack(Material.ARROW);
             ItemMeta previousMeta = previousPage.getItemMeta();
-            previousMeta.setDisplayName(ChatColor.AQUA + "Previous Page");
+            previousMeta.setDisplayName(ChatColor.AQUA + LangUtil.getTranslation("previous_page"));
             previousPage.setItemMeta(previousMeta);
             pollsInventory.setItem(45, previousPage);
         }
@@ -125,7 +130,7 @@ public final class PollsCommand implements CommandExecutor {
         if (currentPage < totalPages - 1) {
             ItemStack nextPage = new ItemStack(Material.ARROW);
             ItemMeta nextMeta = nextPage.getItemMeta();
-            nextMeta.setDisplayName(ChatColor.AQUA + "Next Page");
+            nextMeta.setDisplayName(ChatColor.AQUA + LangUtil.getTranslation("next_page"));
             nextPage.setItemMeta(nextMeta);
             pollsInventory.setItem(53, nextPage);
         }

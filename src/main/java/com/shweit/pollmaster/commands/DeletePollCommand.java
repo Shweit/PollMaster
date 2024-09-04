@@ -3,7 +3,7 @@ package com.shweit.pollmaster.commands;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.shweit.pollmaster.utils.ConnectionManager;
-import com.shweit.pollmaster.utils.Logger;
+import com.shweit.pollmaster.utils.LangUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -33,11 +33,11 @@ public final class DeletePollCommand implements CommandExecutor, TabExecutor {
                     if (resultSet.next()) {
                         String creatorUUID = resultSet.getString("uuid");
                         if (!creatorUUID.equals(whoClicked.getUniqueId().toString())) {
-                            whoClicked.sendMessage(ChatColor.RED + "You can only delete polls that you have created.");
+                            whoClicked.sendMessage(ChatColor.RED + LangUtil.getTranslation("delete_poll_not_creator"));
                             return false;
                         }
                     } else {
-                        whoClicked.sendMessage(ChatColor.RED + "Poll ID " + pollId + " not found.");
+                        whoClicked.sendMessage(ChatColor.RED + LangUtil.getTranslation("poll_not_found"));
                         return false;
                     }
                 }
@@ -81,7 +81,7 @@ public final class DeletePollCommand implements CommandExecutor, TabExecutor {
             whoClicked.sendMessage(ChatColor.GRAY + "-------------------- [" + ChatColor.LIGHT_PURPLE + "Poll Results" + ChatColor.GRAY + "] --------------------");
             whoClicked.sendMessage("");
             whoClicked.sendMessage("");
-            whoClicked.sendMessage(ChatColor.YELLOW + "Question: " + ChatColor.WHITE + pollQuestion);
+            whoClicked.sendMessage(ChatColor.YELLOW + LangUtil.getTranslation("question") + ": " + ChatColor.WHITE + pollQuestion);
             whoClicked.sendMessage("");
 
             // Display each answer with the number of votes
@@ -90,7 +90,10 @@ public final class DeletePollCommand implements CommandExecutor, TabExecutor {
 
             for (String answer : possibleAnswers) {
                 int votes = voteCounts.getOrDefault(answer.trim(), 0);
-                whoClicked.sendMessage(ChatColor.AQUA + "Answer: " + ChatColor.WHITE + answer.trim() + ChatColor.GRAY + " | Votes: " + ChatColor.GREEN + votes);
+                whoClicked.sendMessage(ChatColor.AQUA + LangUtil.getTranslation("answer") + ": "
+                        + ChatColor.WHITE + answer.trim() + ChatColor.GRAY + " | " + LangUtil.getTranslation("votes") + ": "
+                        + ChatColor.GREEN + votes
+                );
 
                 // Track the answer(s) with the highest votes
                 if (votes > maxVotes) {
@@ -105,7 +108,7 @@ public final class DeletePollCommand implements CommandExecutor, TabExecutor {
             // Display the winning answer(s)
             whoClicked.sendMessage("");
             whoClicked.sendMessage("");
-            whoClicked.sendMessage(ChatColor.LIGHT_PURPLE + "Winning Answer(s): " + ChatColor.WHITE + String.join(", ", winningAnswers));
+            whoClicked.sendMessage(ChatColor.LIGHT_PURPLE + LangUtil.getTranslation("winning_answer") + ChatColor.WHITE + String.join(", ", winningAnswers));
             whoClicked.sendMessage("");
             whoClicked.sendMessage(ChatColor.GRAY + "-------------------- [" + ChatColor.LIGHT_PURPLE + "Poll Results" + ChatColor.GRAY + "] --------------------");
 
@@ -126,16 +129,16 @@ public final class DeletePollCommand implements CommandExecutor, TabExecutor {
                         deleteVotesStmt.executeUpdate(); // Delete all votes associated with the poll
                     }
 
-                    whoClicked.sendMessage(ChatColor.GREEN + "Poll ID " + pollId + " has been successfully deleted.");
+                    whoClicked.sendMessage(ChatColor.GREEN + LangUtil.getTranslation("poll_deleted"));
                     return true;
                 } else {
-                    whoClicked.sendMessage(ChatColor.RED + "Poll ID " + pollId + " not found. Deletion failed.");
+                    whoClicked.sendMessage(ChatColor.RED + LangUtil.getTranslation("poll_not_found"));
                     return false;
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            whoClicked.sendMessage(ChatColor.RED + "An error occurred while trying to delete the poll.");
+            whoClicked.sendMessage(ChatColor.RED + LangUtil.getTranslation("poll_deleted_error"));
         }
 
         return false;
@@ -145,12 +148,12 @@ public final class DeletePollCommand implements CommandExecutor, TabExecutor {
     @Override
     public boolean onCommand(final CommandSender commandSender, final Command command, final String s, final String[] args) {
         if (!(commandSender instanceof Player player)) {
-            commandSender.sendMessage("This command can only be used by players.");
+            commandSender.sendMessage(LangUtil.getTranslation("command_no_player"));
             return true;
         }
 
         if (!player.hasPermission("pollmaster.delete")) {
-            player.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
+            player.sendMessage(ChatColor.RED + LangUtil.getTranslation("command_no_permission"));
             return true;
         }
 
@@ -161,7 +164,6 @@ public final class DeletePollCommand implements CommandExecutor, TabExecutor {
     @Override
     public List<String> onTabComplete(final CommandSender commandSender, final Command command, final String s, final String[] args) {
         if (args.length == 1) {
-            Logger.debug("Tab completion for DeletePollCommand");
             return getPlayerPolls((Player) commandSender);
         }
 
