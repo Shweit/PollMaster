@@ -8,7 +8,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LangUtil {
+public abstract class LangUtil {
 
     private static Map<String, String> translations = new HashMap<>();
     private static String currentLang = "en"; // Default language
@@ -16,7 +16,7 @@ public class LangUtil {
     private static JavaPlugin plugin;
 
     // Initialize the LangUtil class with the plugin reference
-    public static void initialize(JavaPlugin pluginInstance) {
+    public static void initialize(final JavaPlugin pluginInstance) {
         plugin = pluginInstance;
         loadLanguageFile();
     }
@@ -47,12 +47,12 @@ public class LangUtil {
     }
 
     // Retrieve the translation by key
-    public static String getTranslation(String key) {
+    public static String getTranslation(final String key) {
         return translations.getOrDefault(key, key); // Fallback to key itself if translation is not found
     }
 
     // Retrieve translation with placeholders replaced by values from a Map
-    public static String getTranslation(String key, Map<String, String> params) {
+    public static String getTranslation(final String key, final Map<String, String> params) {
         String message = getTranslation(key);
 
         if (params != null && !params.isEmpty()) {

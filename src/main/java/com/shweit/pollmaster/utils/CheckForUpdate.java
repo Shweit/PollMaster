@@ -39,7 +39,8 @@ public final class CheckForUpdate implements Listener {
             Logger.debug("Checking for plugin update...");
             if (checkForPluginUpdate()) {
                 event.getPlayer().sendMessage(ChatColor.GREEN + LangUtil.getTranslation("update_available_player_join"));
-                event.getPlayer().sendMessage(ChatColor.GREEN + LangUtil.getTranslation("current_version") + ChatColor.GOLD + PollMaster.getInstance().getDescription().getVersion());
+                event.getPlayer().sendMessage(ChatColor.GREEN + LangUtil.getTranslation("current_version")
+                        + ChatColor.GOLD + PollMaster.getInstance().getDescription().getVersion());
                 event.getPlayer().sendMessage(ChatColor.GREEN + LangUtil.getTranslation("new_version") + ChatColor.GOLD + latestVersion);
             }
         }

@@ -3,7 +3,6 @@ package com.shweit.pollmaster.commands;
 import com.shweit.pollmaster.PollMaster;
 import com.shweit.pollmaster.utils.CheckForUpdate;
 import com.shweit.pollmaster.utils.LangUtil;
-import com.shweit.pollmaster.utils.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,7 +18,8 @@ public final class VersionCommand implements CommandExecutor, TabExecutor {
     public boolean onCommand(final CommandSender commandSender, final Command command, final String s, final String[] args) {
         switch (args[0]) {
             case "version":
-                commandSender.sendMessage(ChatColor.GREEN + LangUtil.getTranslation("pollmaster_version") + ChatColor.GOLD + PollMaster.getInstance().getDescription().getVersion());
+                commandSender.sendMessage(ChatColor.GREEN + LangUtil.getTranslation("pollmaster_version")
+                        + ChatColor.GOLD + PollMaster.getInstance().getDescription().getVersion());
                 commandSender.sendMessage("");
                 commandSender.sendMessage(ChatColor.GREEN + LangUtil.getTranslation("checking_for_updates"));
 

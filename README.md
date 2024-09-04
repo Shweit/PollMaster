@@ -64,7 +64,7 @@ java -Xmx1024M -Xms1024M -jar paper-1.21.jar nogui
 ```
 
 ## Future Features
-- **Custom Poll Durations:** Set start and end times for polls.
+- **Custom Poll Durations:** Set start and end times for polls. If the player is offline when the poll ends, the results will be displayed when they log in.
 - **Advanced Poll Analytics:** Provide detailed statistics and insights on poll results.
 
 ## Contributing

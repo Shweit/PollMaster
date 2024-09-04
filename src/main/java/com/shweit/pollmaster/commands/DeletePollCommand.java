@@ -90,7 +90,10 @@ public final class DeletePollCommand implements CommandExecutor, TabExecutor {
 
             for (String answer : possibleAnswers) {
                 int votes = voteCounts.getOrDefault(answer.trim(), 0);
-                whoClicked.sendMessage(ChatColor.AQUA + LangUtil.getTranslation("answer") + ": " + ChatColor.WHITE + answer.trim() + ChatColor.GRAY + " | " + LangUtil.getTranslation("votes") + ": " + ChatColor.GREEN + votes);
+                whoClicked.sendMessage(ChatColor.AQUA + LangUtil.getTranslation("answer") + ": "
+                        + ChatColor.WHITE + answer.trim() + ChatColor.GRAY + " | " + LangUtil.getTranslation("votes") + ": "
+                        + ChatColor.GREEN + votes
+                );
 
                 // Track the answer(s) with the highest votes
                 if (votes > maxVotes) {
