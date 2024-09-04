@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.Material;
@@ -110,11 +111,12 @@ public final class PollsCommand implements CommandExecutor {
                 lore.add(ChatColor.RED + LangUtil.getTranslation("delete_poll_lore"));
             }
             meta.setLore(lore);
+            if (creator.getUniqueId() == player.getUniqueId()) {
+                meta.addEnchant(Enchantment.UNBREAKING, 1, true);
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
 
             pollItem.setItemMeta(meta);
-            if (creator.getUniqueId() == player.getUniqueId()) {
-                pollItem.addUnsafeEnchantment(Enchantment.UNBREAKING, 1);
-            }
             pollsInventory.addItem(pollItem);
         }
 
