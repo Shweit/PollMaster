@@ -1,7 +1,7 @@
 name: PollMaster
 version: '1.0'
 description: A versatile Minecraft plugin that allows players to create, manage, and view polls in-game, providing an engaging way for players to participate in server decisions.
-main: com.shweit.poll.PollMaster
+main: com.shweit.pollmaster.PollMaster
 api-version: '1.21'
 author: Shweit
 
@@ -25,3 +25,7 @@ commands:
     description: End a poll and display the results.
     usage: /endpoll <poll_id>
     permission: pollmaster.end
+
+  pollmaster:
+    description: Show information about the plugin.
+    usage: /pollmaster
