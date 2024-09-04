@@ -1,6 +1,7 @@
 package com.shweit.pollmaster.commands;
 
 import com.shweit.pollmaster.utils.ConnectionManager;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,8 +12,10 @@ import com.google.gson.Gson;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -82,13 +85,20 @@ public final class CreatePollCommand implements CommandExecutor, TabExecutor {
         String optionsAsJsonString = convertListToJson(answers);
 
         // Speichere das Poll in der Datenbank
+        int id = 0;
         try {
-            savePollToDatabase(player.getUniqueId(), question, optionsAsJsonString, allowMultipleAnswers);
+            id = savePollToDatabase(player.getUniqueId(), question, optionsAsJsonString, allowMultipleAnswers);
             player.sendMessage("Poll created successfully!");
         } catch (SQLException e) {
             player.sendMessage("An error occurred while saving the poll.");
             e.printStackTrace();
         }
+
+        int finalId = id;
+        Bukkit.getOnlinePlayers().forEach(p -> {
+            p.sendMessage(ChatColor.GREEN + "A new poll has been created by " + player.getName() + ".");
+            p.sendMessage(ChatColor.GREEN + "To view the poll, type /vote " + finalId);
+        });
 
         return true;
     }
@@ -97,7 +107,7 @@ public final class CreatePollCommand implements CommandExecutor, TabExecutor {
         return gson.toJson(list);
     }
 
-    private void savePollToDatabase(final UUID uniqueId, final String question, final String answersAsJsonString, final boolean multi) throws SQLException {
+    private int savePollToDatabase(final UUID uniqueId, final String question, final String answersAsJsonString, final boolean multi) throws SQLException {
         Connection connection = new ConnectionManager().getConnection();
         String insertPollQuery = "INSERT INTO polls (uuid, question, answers, allowMultiple, isOpen) VALUES (?, ?, ?, ?, ?)";
 
@@ -109,6 +119,23 @@ public final class CreatePollCommand implements CommandExecutor, TabExecutor {
             preparedStatement.setBoolean(5, true);
             preparedStatement.executeUpdate();
         }
+
+        // Return the ID of the poll
+        String query = "SELECT id FROM polls WHERE uuid = ? AND question = ? AND answers = ? AND allowMultiple = ? AND isOpen = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, uniqueId.toString());
+            statement.setString(2, question);
+            statement.setString(3, answersAsJsonString);
+            statement.setBoolean(4, multi);
+            statement.setBoolean(5, true);
+            try (ResultSet results = statement.executeQuery()) {
+                if (results.next()) {
+                    return results.getInt("id");
+                }
+            }
+        }
+
+        return 0;
     }
 
     @Override
