@@ -1,6 +1,6 @@
-package com.shweit.poll.utils;
+package com.shweit.pollmaster.utils;
 
-import com.shweit.poll.Poll;
+import com.shweit.pollmaster.PollMaster;
 import org.bukkit.Bukkit;
 
 import java.util.logging.Level;
@@ -26,7 +26,7 @@ public final class Logger {
     }
 
     public static void debug(final String message) {
-        boolean debugMode = Poll.config.getBoolean("debug", false);
+        boolean debugMode = PollMaster.config.getBoolean("debug", false);
 
         if (debugMode) {
             Bukkit.getLogger().log(Level.INFO, "[DEBUG] " + PREFIX + message);

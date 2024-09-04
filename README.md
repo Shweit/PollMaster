@@ -1,8 +1,8 @@
-# Poll Plugin
-<img src="https://img.shields.io/github/actions/workflow/status/Shweit/Poll/runtime.yml" /> <img src="https://img.shields.io/github/v/release/Poll/MinecraftServerAPI" /> <img src="https://img.shields.io/github/license/Shweit/Poll" />
+# PollMaster Plugin
+<img src="https://img.shields.io/github/actions/workflow/status/Shweit/PollMaster/runtime.yml" /> <img src="https://img.shields.io/github/v/release/PollMaster/MinecraftServerAPI" /> <img src="https://img.shields.io/github/license/Shweit/PollMaster" />
 
 ## Overview
-The Poll Plugin is a versatile and easy-to-use tool for Minecraft servers, allowing administrators to create and manage polls directly in-game. With this plugin, server owners can engage their players by gathering feedback, making decisions, and encouraging participation in server activities.
+The PollMaster Plugin is a versatile and easy-to-use tool for Minecraft servers, allowing administrators to create and manage polls directly in-game. With this plugin, server owners can engage their players by gathering feedback, making decisions, and encouraging participation in server activities.
 
 ## Features
 - **Create Polls:** Users with the appropriate permissions can create polls with custom questions and options.
@@ -14,18 +14,23 @@ The Poll Plugin is a versatile and easy-to-use tool for Minecraft servers, allow
 ## Commands
 `/createpoll "<question>" "<anwser1>" "<answer2> ... [--multi]"`
 - **Description:** Creates a new poll with the specified question and answers. The --multi flag allows multiple answers to be selected.
-- **Permission:** poll.create
+- **Permission:** pollmaster.create
 - **Example:** `/createpoll "What is your favorite color?" "Red" "Blue" "Green"`
 
 `/polls [page]`
 - **Description:** Opens the polls GUI, showing a list of all active polls. Use the optional page argument to navigate through multiple pages of polls.
-- **Permission:** poll.view
+- **Permission:** pollmaster.view
 - **Example:** `/polls 2`
 
 `/vote <poll_id> <answer>`
 - **Description:** Votes for the specified answer in the given poll.
-- **Permission:** poll.vote
+- **Permission:** pollmaster.vote
 - **Example:** `/vote 1 "Red"`
+
+`/endpoll <poll_id>`
+- **Description:** Ends the specified poll and displays the final results.
+- **Permission:** pollmaster.end
+- **Example:** `/endpoll 1`
 
 ## Installation
 ### Prerequisites
@@ -36,8 +41,8 @@ The Poll Plugin is a versatile and easy-to-use tool for Minecraft servers, allow
 ### Cloning the Repository
 1. Clone the repository to your local machine.
 ```shell
-git clone git@github.com:Shweit/Poll.git
-cd POll
+git clone git@github.com:Shweit/PollMaster.git
+cd PollMaster
 ```
 ### Building the Project
 2. Build the project using Maven.
@@ -47,7 +52,7 @@ mvn clean install
 ### Setting up the Minecraft Server
 3. Copy the generated JAR file to the `plugins` directory of your Minecraft server.
 ```shell
-cp target/Poll-*.jar /path/to/your/minecraft/server/plugins
+cp target/PollMaster-*.jar /path/to/your/minecraft/server/plugins
 ```
 4. Start or restart your Minecraft server.
 ```shell

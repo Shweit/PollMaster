@@ -1,10 +1,10 @@
-package com.shweit.poll.commands.pollDetailsCommand;
+package com.shweit.pollmaster.commands.pollDetailsCommand;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.shweit.poll.commands.DeletePollCommand;
-import com.shweit.poll.commands.pollsCommand.PollsCommand;
-import com.shweit.poll.utils.ConnectionManager;
+import com.shweit.pollmaster.commands.DeletePollCommand;
+import com.shweit.pollmaster.commands.pollsCommand.PollsCommand;
+import com.shweit.pollmaster.utils.ConnectionManager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

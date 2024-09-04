@@ -1,6 +1,6 @@
-package com.shweit.poll.commands.pollsCommand;
+package com.shweit.pollmaster.commands.pollsCommand;
 
-import com.shweit.poll.utils.ConnectionManager;
+import com.shweit.pollmaster.utils.ConnectionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -29,7 +29,7 @@ public final class PollsCommand implements CommandExecutor {
             return true;
         }
 
-        if (!sender.hasPermission("polls.view")) {
+        if (!sender.hasPermission("pollmaster.view")) {
             sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
             return true;
         }

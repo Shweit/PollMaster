@@ -1,8 +1,8 @@
-package com.shweit.poll.commands.pollsCommand;
+package com.shweit.pollmaster.commands.pollsCommand;
 
-import com.shweit.poll.Poll;
-import com.shweit.poll.commands.DeletePollCommand;
-import com.shweit.poll.commands.pollDetailsCommand.PollDetailsCommand;
+import com.shweit.pollmaster.PollMaster;
+import com.shweit.pollmaster.commands.DeletePollCommand;
+import com.shweit.pollmaster.commands.pollDetailsCommand.PollDetailsCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -53,7 +53,7 @@ public final class PollsGuiListener implements Listener {
         String title = event.getView().getTitle();
         int currentPage = extractPageNumber(title);
         if (currentPage != -1) {
-            Poll.getInstance().getServer().getScheduler().runTask(Poll.getInstance(), () -> {
+            PollMaster.getInstance().getServer().getScheduler().runTask(PollMaster.getInstance(), () -> {
                 event.getWhoClicked().closeInventory();
                 ((Player) event.getWhoClicked()).performCommand("polls " + (currentPage + change));
             });

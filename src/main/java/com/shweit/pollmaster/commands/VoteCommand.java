@@ -1,7 +1,7 @@
-package com.shweit.poll.commands;
+package com.shweit.pollmaster.commands;
 
-import com.shweit.poll.commands.pollDetailsCommand.PollDetailsCommand;
-import com.shweit.poll.utils.ConnectionManager;
+import com.shweit.pollmaster.commands.pollDetailsCommand.PollDetailsCommand;
+import com.shweit.pollmaster.utils.ConnectionManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -29,7 +29,7 @@ public final class VoteCommand implements CommandExecutor, TabExecutor {
             return false;
         }
 
-        if (!player.hasPermission("polls.vote")) {
+        if (!player.hasPermission("pollmaster.vote")) {
             player.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
             return false;
         }

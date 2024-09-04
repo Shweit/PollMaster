@@ -1,9 +1,9 @@
-package com.shweit.poll.commands;
+package com.shweit.pollmaster.commands;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.shweit.poll.utils.ConnectionManager;
-import com.shweit.poll.utils.Logger;
+import com.shweit.pollmaster.utils.ConnectionManager;
+import com.shweit.pollmaster.utils.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -146,6 +146,11 @@ public final class DeletePollCommand implements CommandExecutor, TabExecutor {
     public boolean onCommand(final CommandSender commandSender, final Command command, final String s, final String[] args) {
         if (!(commandSender instanceof Player player)) {
             commandSender.sendMessage("This command can only be used by players.");
+            return true;
+        }
+
+        if (!player.hasPermission("pollmaster.delete")) {
+            player.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
             return true;
         }
 

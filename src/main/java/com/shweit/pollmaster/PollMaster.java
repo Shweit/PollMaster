@@ -1,13 +1,13 @@
-package com.shweit.poll;
+package com.shweit.pollmaster;
 
-import com.shweit.poll.commands.CreatePollCommand;
-import com.shweit.poll.commands.DeletePollCommand;
-import com.shweit.poll.commands.VoteCommand;
-import com.shweit.poll.commands.pollDetailsCommand.PollDetailGuiListener;
-import com.shweit.poll.commands.pollsCommand.PollsCommand;
-import com.shweit.poll.commands.pollsCommand.PollsGuiListener;
-import com.shweit.poll.utils.ConnectionManager;
-import com.shweit.poll.utils.Logger;
+import com.shweit.pollmaster.commands.CreatePollCommand;
+import com.shweit.pollmaster.commands.DeletePollCommand;
+import com.shweit.pollmaster.commands.VoteCommand;
+import com.shweit.pollmaster.commands.pollDetailsCommand.PollDetailGuiListener;
+import com.shweit.pollmaster.commands.pollsCommand.PollsCommand;
+import com.shweit.pollmaster.commands.pollsCommand.PollsGuiListener;
+import com.shweit.pollmaster.utils.ConnectionManager;
+import com.shweit.pollmaster.utils.Logger;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -19,9 +19,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public final class Poll extends JavaPlugin {
+public final class PollMaster extends JavaPlugin {
     public static FileConfiguration config;
-    private static Poll instance;
+    private static PollMaster instance;
 
     @Override
     public void onEnable() {
@@ -41,7 +41,7 @@ public final class Poll extends JavaPlugin {
     @Override
     public void onDisable() { }
 
-    public static Poll getInstance() {
+    public static PollMaster getInstance() {
         return instance;
     }
 

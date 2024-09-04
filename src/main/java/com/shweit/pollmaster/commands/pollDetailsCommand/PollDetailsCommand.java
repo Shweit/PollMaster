@@ -1,8 +1,8 @@
-package com.shweit.poll.commands.pollDetailsCommand;
+package com.shweit.pollmaster.commands.pollDetailsCommand;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.shweit.poll.utils.ConnectionManager;
+import com.shweit.pollmaster.utils.ConnectionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -30,7 +30,7 @@ public final class PollDetailsCommand {
      * @param pollId The ID of the poll to display.
      */
     public void openPollDetails(final Player player, final int pollId) {
-        if (!player.hasPermission("polls.vote")) {
+        if (!player.hasPermission("pollmaster.vote")) {
             player.sendMessage(ChatColor.RED + "You do not have permission to view poll details.");
         }
 

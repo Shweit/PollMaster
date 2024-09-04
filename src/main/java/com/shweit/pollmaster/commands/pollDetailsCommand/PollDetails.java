@@ -1,4 +1,4 @@
-package com.shweit.poll.commands.pollDetailsCommand;
+package com.shweit.pollmaster.commands.pollDetailsCommand;
 
 import java.util.List;
 
