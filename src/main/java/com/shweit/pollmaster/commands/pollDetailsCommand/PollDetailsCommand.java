@@ -11,6 +11,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -80,11 +81,12 @@ public final class PollDetailsCommand {
             questionLore.add(ChatColor.RED + LangUtil.getTranslation("delete_poll_lore"));
         }
         questionMeta.setLore(questionLore);
+        if (creator.getUniqueId() == player.getUniqueId()) {
+            questionMeta.addEnchant(Enchantment.UNBREAKING, 1, true);
+            questionMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        }
 
         questionItem.setItemMeta(questionMeta);
-        if (creator.getUniqueId() == player.getUniqueId()) {
-            questionItem.addUnsafeEnchantment(Enchantment.UNBREAKING, 1);
-        }
 
         pollDetailsInventory.setItem(13, questionItem);
 
