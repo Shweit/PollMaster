@@ -1,8 +1,8 @@
 name: PollMaster
-version: '1.0.1'
+version: '${project.version}'
 description: A versatile Minecraft plugin that allows players to create, manage, and view polls in-game, providing an engaging way for players to participate in server decisions.
 main: com.shweit.pollmaster.PollMaster
-api-version: '1.21'
+api-version: '${minecraft.api.version}'
 author: Shweit
 
 commands:

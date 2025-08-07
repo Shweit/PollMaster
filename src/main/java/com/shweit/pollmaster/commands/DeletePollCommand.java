@@ -78,11 +78,14 @@ public final class DeletePollCommand implements CommandExecutor, TabExecutor {
             }
 
             // Display poll results in chat
-            whoClicked.sendMessage(ChatColor.GRAY + "-------------------- [" + ChatColor.LIGHT_PURPLE + "Poll Results" + ChatColor.GRAY + "] --------------------");
             whoClicked.sendMessage("");
+            whoClicked.sendMessage(ChatColor.GRAY + LangUtil.getTranslation("poll_results_divider"));
+            whoClicked.sendMessage(ChatColor.LIGHT_PURPLE + LangUtil.getTranslation("poll_results_header"));
+            whoClicked.sendMessage(ChatColor.GRAY + LangUtil.getTranslation("poll_results_divider"));
             whoClicked.sendMessage("");
-            whoClicked.sendMessage(ChatColor.YELLOW + LangUtil.getTranslation("question") + ": " + ChatColor.WHITE + pollQuestion);
+            whoClicked.sendMessage(ChatColor.YELLOW + LangUtil.getTranslation("question") + ": " + ChatColor.WHITE + "§l" + pollQuestion);
             whoClicked.sendMessage("");
+            whoClicked.sendMessage(ChatColor.GRAY + LangUtil.getTranslation("poll_results_subdivider"));
 
             // Display each answer with the number of votes
             int maxVotes = 0;
@@ -91,8 +94,8 @@ public final class DeletePollCommand implements CommandExecutor, TabExecutor {
             for (String answer : possibleAnswers) {
                 int votes = voteCounts.getOrDefault(answer.trim(), 0);
                 whoClicked.sendMessage(ChatColor.AQUA + LangUtil.getTranslation("answer") + ": "
-                        + ChatColor.WHITE + answer.trim() + ChatColor.GRAY + " | " + LangUtil.getTranslation("votes") + ": "
-                        + ChatColor.GREEN + votes
+                        + ChatColor.WHITE + "§l" + answer.trim() + ChatColor.GRAY + " | " + LangUtil.getTranslation("votes") + ": "
+                        + ChatColor.GREEN + "§l" + votes
                 );
 
                 // Track the answer(s) with the highest votes
@@ -107,10 +110,10 @@ public final class DeletePollCommand implements CommandExecutor, TabExecutor {
 
             // Display the winning answer(s)
             whoClicked.sendMessage("");
+            whoClicked.sendMessage(ChatColor.GRAY + LangUtil.getTranslation("poll_results_subdivider"));
+            whoClicked.sendMessage(ChatColor.LIGHT_PURPLE + LangUtil.getTranslation("winning_answer") + ChatColor.WHITE + "§l" + String.join(", ", winningAnswers));
             whoClicked.sendMessage("");
-            whoClicked.sendMessage(ChatColor.LIGHT_PURPLE + LangUtil.getTranslation("winning_answer") + ChatColor.WHITE + String.join(", ", winningAnswers));
-            whoClicked.sendMessage("");
-            whoClicked.sendMessage(ChatColor.GRAY + "-------------------- [" + ChatColor.LIGHT_PURPLE + "Poll Results" + ChatColor.GRAY + "] --------------------");
+            whoClicked.sendMessage(ChatColor.GRAY + LangUtil.getTranslation("poll_results_divider"));
 
             // Prepare the SQL statements to delete the poll and associated votes
             String deletePollQuery = "DELETE FROM polls WHERE id = ?";

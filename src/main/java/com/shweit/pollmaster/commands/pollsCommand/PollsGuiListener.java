@@ -31,10 +31,15 @@ public final class PollsGuiListener implements Listener {
 
         String displayName = clickedItem.getItemMeta().getDisplayName();
 
-        if (displayName.equals(ChatColor.AQUA + LangUtil.getTranslation("next_page"))) {
+        String nextPageText = ChatColor.AQUA + LangUtil.getTranslation("next_page");
+        String previousPageText = ChatColor.AQUA + LangUtil.getTranslation("previous_page");
+
+        if (displayName.equals(nextPageText)) {
             handlePageChange(event, 1);
-        } else if (displayName.equals(ChatColor.AQUA + LangUtil.getTranslation("previous_page"))) {
+        } else if (displayName.equals(previousPageText)) {
             handlePageChange(event, -1);
+        } else if (displayName.contains("Schließen") || displayName.contains("Close")) {
+            event.getWhoClicked().closeInventory();
         } else {
             String lore = clickedItem.getItemMeta().getLore().get(2);
             int pollId = Integer.parseInt(ChatColor.stripColor(lore).replace("ID: ", ""));

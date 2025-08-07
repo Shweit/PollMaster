@@ -3,9 +3,7 @@ package com.shweit.pollmaster.commands;
 import com.shweit.pollmaster.utils.ConnectionManager;
 import com.shweit.pollmaster.utils.LangUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
@@ -17,23 +15,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-public final class CreatePollCommand implements CommandExecutor, TabExecutor {
+public final class CreatePollCommand implements TabExecutor {
     private final Gson gson = new Gson();
 
     @Override
     public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(ChatColor.RED + LangUtil.getTranslation("command_no_player"));
+            sender.sendMessage(LangUtil.getTranslation("command_no_player"));
             return true;
         }
 
         if (!player.hasPermission("pollmaster.create")) {
-            player.sendMessage(ChatColor.RED + LangUtil.getTranslation("command_no_permission"));
+            player.sendMessage(LangUtil.getTranslation("command_no_permission"));
             return true;
         }
 
         if (args.length < 3) {
-            player.sendMessage(ChatColor.RED + LangUtil.getTranslation("usage") + "/createpoll \"<question>\" \"<answer1>\" \"<answer2>\" ... [--multi]");
+            player.sendMessage(LangUtil.getTranslation("usage") + "/createpoll \"<question>\" \"<answer1>\" \"<answer2>\" ... [--multi]");
             return false;
         }
 
@@ -86,7 +84,9 @@ public final class CreatePollCommand implements CommandExecutor, TabExecutor {
         int id = 0;
         try {
             id = savePollToDatabase(player.getUniqueId(), question, optionsAsJsonString, allowMultipleAnswers);
+            player.sendMessage("");
             player.sendMessage(LangUtil.getTranslation("poll_created"));
+            player.sendMessage("");
         } catch (SQLException e) {
             player.sendMessage(LangUtil.getTranslation("error_while_creating_poll"));
             e.printStackTrace();
@@ -95,12 +95,12 @@ public final class CreatePollCommand implements CommandExecutor, TabExecutor {
         int finalId = id;
         Bukkit.getOnlinePlayers().forEach(p -> {
             Map<String, String> params = new HashMap<>();
-            params.put("playername", p.getName());
-            p.sendMessage(ChatColor.GREEN + LangUtil.getTranslation("new_poll_created", params));
+            params.put("playername", player.getName());
+            p.sendMessage(LangUtil.getTranslation("new_poll_created", params));
 
             params = new HashMap<>();
             params.put("pollid", String.valueOf(finalId));
-            p.sendMessage(ChatColor.GREEN + LangUtil.getTranslation("new_poll_created_subtitle", params));
+            p.sendMessage(LangUtil.getTranslation("new_poll_created_subtitle", params));
         });
 
         return true;

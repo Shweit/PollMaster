@@ -26,12 +26,12 @@ public final class VoteCommand implements CommandExecutor, TabExecutor {
     @Override
     public boolean onCommand(final CommandSender commandSender, final Command command, final String s, final String[] args) {
         if (!(commandSender instanceof Player player)) {
-            commandSender.sendMessage(ChatColor.RED + LangUtil.getTranslation("command_no_player"));
+            commandSender.sendMessage(LangUtil.getTranslation("command_no_player"));
             return false;
         }
 
         if (!player.hasPermission("pollmaster.vote")) {
-            player.sendMessage(ChatColor.RED + LangUtil.getTranslation("command_no_permission"));
+            player.sendMessage(LangUtil.getTranslation("command_no_permission"));
             return false;
         }
 

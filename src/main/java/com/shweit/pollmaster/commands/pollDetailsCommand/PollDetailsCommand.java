@@ -110,6 +110,19 @@ public final class PollDetailsCommand {
             }
         }
 
+        // Add navigation buttons
+        ItemStack backButton = new ItemStack(Material.ARROW);
+        ItemMeta backMeta = backButton.getItemMeta();
+        backMeta.setDisplayName(LangUtil.getTranslation("back_gui"));
+        backButton.setItemMeta(backMeta);
+        pollDetailsInventory.setItem(45, backButton);
+
+        ItemStack closeButton = new ItemStack(Material.BARRIER);
+        ItemMeta closeMeta = closeButton.getItemMeta();
+        closeMeta.setDisplayName(LangUtil.getTranslation("close_gui"));
+        closeButton.setItemMeta(closeMeta);
+        pollDetailsInventory.setItem(49, closeButton);
+
         player.openInventory(pollDetailsInventory);
     }
 

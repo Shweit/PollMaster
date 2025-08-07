@@ -7,6 +7,7 @@ import com.shweit.pollmaster.commands.VoteCommand;
 import com.shweit.pollmaster.commands.pollDetailsCommand.PollDetailGuiListener;
 import com.shweit.pollmaster.commands.pollsCommand.PollsCommand;
 import com.shweit.pollmaster.commands.pollsCommand.PollsGuiListener;
+import com.shweit.pollmaster.events.PlayerJoinListener;
 import com.shweit.pollmaster.utils.CheckForUpdate;
 import com.shweit.pollmaster.utils.ConnectionManager;
 import com.shweit.pollmaster.utils.LangUtil;
@@ -43,6 +44,7 @@ public final class PollMaster extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new PollsGuiListener(), this);
         getServer().getPluginManager().registerEvents(new PollDetailGuiListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
         getServer().getPluginManager().registerEvents(new CheckForUpdate(), this);
     }
 

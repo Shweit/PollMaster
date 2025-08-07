@@ -137,6 +137,13 @@ public final class PollsCommand implements CommandExecutor {
             pollsInventory.setItem(53, nextPage);
         }
 
+        // Add close button
+        ItemStack closeButton = new ItemStack(Material.BARRIER);
+        ItemMeta closeMeta = closeButton.getItemMeta();
+        closeMeta.setDisplayName(LangUtil.getTranslation("close_gui"));
+        closeButton.setItemMeta(closeMeta);
+        pollsInventory.setItem(49, closeButton);
+
         player.openInventory(pollsInventory);
     }
 

@@ -18,8 +18,11 @@ public final class VersionCommand implements CommandExecutor, TabExecutor {
     public boolean onCommand(final CommandSender commandSender, final Command command, final String s, final String[] args) {
         switch (args[0]) {
             case "version":
+                commandSender.sendMessage("");
+                commandSender.sendMessage(ChatColor.GRAY + "§l=========================================");
                 commandSender.sendMessage(ChatColor.GREEN + LangUtil.getTranslation("pollmaster_version")
-                        + ChatColor.GOLD + PollMaster.getInstance().getDescription().getVersion());
+                        + ChatColor.GOLD + "§l" + PollMaster.getInstance().getDescription().getVersion());
+                commandSender.sendMessage(ChatColor.GRAY + "§l=========================================");
                 commandSender.sendMessage("");
                 commandSender.sendMessage(ChatColor.GREEN + LangUtil.getTranslation("checking_for_updates"));
 
@@ -28,12 +31,12 @@ public final class VersionCommand implements CommandExecutor, TabExecutor {
                 boolean updateAvailable = checkForUpdate.checkForPluginUpdate();
                 if (updateAvailable) {
                     commandSender.sendMessage(ChatColor.GREEN + LangUtil.getTranslation("update_available")
-                            + ChatColor.GOLD + PollMaster.getInstance().getDescription().getVersion()
-                            + ChatColor.GREEN + " -> " + ChatColor.GOLD + checkForUpdate.latestVersion
+                            + ChatColor.GOLD + "§l" + checkForUpdate.latestVersion
                     );
                 } else {
-                    commandSender.sendMessage(ChatColor.GREEN + LangUtil.getTranslation("no_updates_available"));
+                    commandSender.sendMessage(ChatColor.GREEN + LangUtil.getTranslation("no_update_available"));
                 }
+                commandSender.sendMessage("");
 
                 return true;
 

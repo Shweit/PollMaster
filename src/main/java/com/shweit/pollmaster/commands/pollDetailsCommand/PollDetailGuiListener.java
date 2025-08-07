@@ -57,6 +57,15 @@ public final class PollDetailGuiListener implements Listener {
             }
         }
 
+        // Handle navigation buttons
+        if (displayName.contains("Zurück") || displayName.contains("Back")) {
+            new PollsCommand().openPollsGUI((Player) event.getWhoClicked(), 0);
+            return;
+        } else if (displayName.contains("Schließen") || displayName.contains("Close")) {
+            event.getWhoClicked().closeInventory();
+            return;
+        }
+
         if (!displayName.startsWith(ChatColor.YELLOW.toString())) {
             return;
         }
@@ -72,23 +81,25 @@ public final class PollDetailGuiListener implements Listener {
         }
 
         try (Connection connection = new ConnectionManager().getConnection()) {
-            if (hasVoted(playerUUID, pollId, connection)) {
-                if (isSelectedAnswer(playerUUID, pollId, answer, connection)) {
-                    // Remove the answer if it is already selected
-                    removeVote(playerUUID, pollId, answer, connection);
-                } else if (allowsMultipleAnswers(pollId, connection)) {
-                    // Add a new answer if multiple answers are allowed
-                    addVote(playerUUID, pollId, answer, connection);
-                } else {
-                    player.sendMessage(ChatColor.RED + LangUtil.getTranslation("already_voted"));
-                }
+            boolean hasVotedBefore = hasVoted(playerUUID, pollId, connection);
+            boolean isMultiVoteAllowed = allowsMultipleAnswers(pollId, connection);
+            boolean hasSelectedThisAnswer = isSelectedAnswer(playerUUID, pollId, answer, connection);
+            
+            if (hasSelectedThisAnswer) {
+                // User clicked on an already selected answer - remove it
+                removeVote(playerUUID, pollId, answer, connection);
+            } else if (hasVotedBefore && !isMultiVoteAllowed) {
+                // User has already voted and multiple votes are not allowed
+                player.sendMessage(ChatColor.RED + LangUtil.getTranslation("already_voted"));
+                return;
             } else {
-                // Add the answer if no answer has been selected yet
+                // Add the vote (either first vote or additional vote if multi allowed)
                 addVote(playerUUID, pollId, answer, connection);
             }
         } catch (SQLException e) {
             e.printStackTrace();
             player.sendMessage(ChatColor.RED + LangUtil.getTranslation("vote_error"));
+            return;
         }
 
         // Reopen the poll details inventory to reflect the updated votes
@@ -140,7 +151,9 @@ public final class PollDetailGuiListener implements Listener {
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     String votes = resultSet.getString("answers");
-                    return votes != null && !votes.isEmpty();
+                    if (votes != null && !votes.trim().isEmpty() && !votes.equals("[]")) {
+                        return true;
+                    }
                 }
             }
         }
